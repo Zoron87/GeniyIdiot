@@ -13,7 +13,7 @@ namespace GeniyIdiotConsoleApp
 
             string name = Console.ReadLine();
 
-            string statOfGamesPath = Directory.GetCurrentDirectory() + @"\StatisticOfGames.txt";
+            string statOfGamesPath = "StatisticOfGames.txt";
             bool retry = false;
             do
             {
@@ -52,7 +52,7 @@ namespace GeniyIdiotConsoleApp
 
         static string CalcDiagnose(float percent)
         {
-            string diagnosesAndPercentPath = Directory.GetCurrentDirectory() + @"\DiagnosesAndPercent.txt";
+            string diagnosesAndPercentPath = "DiagnosesAndPercent.txt";
 
             var diagnosesAndPercent = File.ReadAllText(diagnosesAndPercentPath).Split(Environment.NewLine).ToList();
 
@@ -66,7 +66,7 @@ namespace GeniyIdiotConsoleApp
         {
             int countRightAnswers = 0;
 
-            string questionsAnswersPath = Directory.GetCurrentDirectory() + @"\QuestionsAnswers.txt";
+            string questionsAnswersPath = "QuestionsAnswers.txt";
             var questionsAnswers = File.ReadAllText(questionsAnswersPath).Split(Environment.NewLine).OrderBy(r => new Random().Next()).ToList();
 
             foreach (var item in questionsAnswers)
