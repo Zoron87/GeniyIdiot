@@ -15,9 +15,10 @@ namespace GeniyIdiotConsoleApp
 
             string statOfGamesPath = "StatisticOfGames.txt";
             bool retry = false;
+            float percentRightAnswers;
             do
             {
-                float percentRightAnswers = GetPercentCorrectAnswers();
+                percentRightAnswers = GetPercentCorrectAnswers();
                 string yourDiagnose = CalcDiagnose(percentRightAnswers);
 
                 Console.WriteLine($"{name}, Ваш диагноз - {yourDiagnose}");
@@ -33,7 +34,10 @@ namespace GeniyIdiotConsoleApp
 
             Console.WriteLine("Вывести статистику игр? Да / Нет");
 
-            if (GetAnswerFromUser()) OutputStatsFromFile(statOfGamesPath);
+            if (GetAnswerFromUser()) OutputStatsFromFile(statOfGamesPath, name, percentRightAnswers);
+
+            var returnFontColorToDefault = ConsoleColor.White;
+            Console.ForegroundColor = returnFontColorToDefault;
         }
 
         static int GetAnswerOnQuestion()
@@ -116,7 +120,7 @@ namespace GeniyIdiotConsoleApp
             File.AppendAllText(statsOfGamePath, currentGameStat);
         }
 
-        static void OutputStatsFromFile(string pathToFileWithStatsOfGame)
+        static void OutputStatsFromFile(string pathToFileWithStatsOfGame, string name, float percentRightAnswers)
         {
             Console.Clear();
             var statsOfAllGames = SortGameStatByDesc(pathToFileWithStatsOfGame);
@@ -128,9 +132,18 @@ namespace GeniyIdiotConsoleApp
             foreach (var statOfOneGame in statsOfAllGames)
             {
                 var statOfOneGameArr = statOfOneGame.Split(";");
+                Console.ForegroundColor = (CheckCurGameStatForChangeColor(statOfOneGameArr[2], statOfOneGameArr[1], name, percentRightAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
+                
                 string printGameStat = OutputFormatConsole(statOfOneGameArr[0], statOfOneGameArr[1], statOfOneGameArr[2]);
                 Console.WriteLine(printGameStat);
             }
+        }
+
+        static bool CheckCurGameStatForChangeColor(string nameUserCheckGame, string statCheckGame, string nameUserCurGame, string statCurGame)
+        {
+            if (nameUserCheckGame == nameUserCurGame && statCheckGame == statCurGame)
+                return true;
+            return false;
         }
 
         private static IEnumerable<string> SortGameStatByDesc(string pathToFileWithStatsOfGame)
