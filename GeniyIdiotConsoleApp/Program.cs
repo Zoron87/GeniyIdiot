@@ -2,13 +2,19 @@
 using System.IO;
 using System;
 using System.Linq;
+using System.Threading;
+
 
 namespace GeniyIdiotConsoleApp
 {
     internal class Program
     {
+        
+
         static void Main(string[] args)
         {
+            BeepSounds.StartGame();
+
             Console.WriteLine("Как вас зовут?");
 
             string name = Console.ReadLine();
@@ -47,7 +53,11 @@ namespace GeniyIdiotConsoleApp
             do
             {
                 tryParseAnswer = int.TryParse(Console.ReadLine(), out answer);
-                if (!tryParseAnswer) Console.WriteLine($"!!! Ответ должен быть в виде числа в диапазоне от {int.MinValue} до {int.MaxValue}. Введите ответ еще раз !!!");
+                if (!tryParseAnswer)
+                {
+                    BeepSounds.WrongAnswer();
+                    Console.WriteLine($"!!! Ответ должен быть в виде числа в диапазоне от {int.MinValue} до {int.MaxValue}. Введите ответ еще раз !!!");
+                }
             }
             while (!tryParseAnswer);
 
@@ -82,6 +92,9 @@ namespace GeniyIdiotConsoleApp
             }
 
             float percentRightAnswers = (float)countRightAnswers / questionsAnswers.Count * 100;
+
+            if (percentRightAnswers >= 70) BeepSounds.GoodDiagnose();
+            else BeepSounds.BadDiagnose();
 
             return percentRightAnswers;
         }
@@ -155,6 +168,38 @@ namespace GeniyIdiotConsoleApp
         static string OutputFormatConsole(string param1, string param2, string param3)
         {
             return String.Format("{0,-10} {1, -9:0.00} {2, 10} ", param1, param2, param3);
+        }
+
+        static class BeepSounds
+        {
+            public static void StartGame()
+            {
+                Console.Beep(500, 500);
+                Console.Beep(500, 500);
+                Console.Beep(660, 1500);
+            }
+            public static void WrongAnswer()
+            {
+                Console.Beep(700, 500);
+            }
+            public static void GoodDiagnose()
+            {
+                Console.Beep(659, 300);
+                Console.Beep(783, 300);
+                Console.Beep(523, 300);
+                Console.Beep(587, 300);
+                Console.Beep(659, 300);
+            }
+            public static void BadDiagnose()
+            {
+                Console.Beep(300, 500);
+                Thread.Sleep(50);
+                Console.Beep(300, 500);
+                Thread.Sleep(50);
+                Console.Beep(300, 500);
+                Thread.Sleep(50);
+                Console.Beep(250, 500);
+            }
         }
     }
 }
