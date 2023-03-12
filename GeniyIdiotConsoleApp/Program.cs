@@ -9,9 +9,80 @@ namespace GeniyIdiotConsoleApp
 {
     internal class Program
     {
-        
 
         static void Main(string[] args)
+        {
+            InitializateStartMenu();
+        }
+
+        private static void InitializateStartMenu()
+        {
+            Console.WriteLine("Выберите подходящий пункт: \n 1. Пройти викторину \n 2. Добавить свой вопрос");
+
+            int[] allowedMenuOption = new int[] { 1, 2 };
+            int answerMenuOption = GetAnswerOnQuestion(allowedMenuOption);
+
+            switch (answerMenuOption)
+            {
+                case 1:
+                    StartTest();
+                    break;
+                case 2:
+                    AddQuestionFromConsole();
+                    break;
+            }
+        }
+        static string GetQuestionsAnswersFilePath()
+        {
+            string questionsAnswersPath = "QuestionsAnswers.txt";
+
+            return questionsAnswersPath;
+        }
+
+        static int GetAnswerOnQuestion(int[] rangeAnswer = null)
+        {
+            int answer = CheckIntRangeAnswerUser();
+
+            answer = CheckContainAnswerInAllowRange(rangeAnswer, answer);
+
+            return answer;
+
+        }
+
+        static int CheckIntRangeAnswerUser()
+        {
+            bool tryParseAnswer;
+            int answer = int.MinValue;
+            do
+            {
+                tryParseAnswer = int.TryParse(Console.ReadLine(), out answer);
+                if (!tryParseAnswer)
+                {
+                    BeepSounds.WrongAnswer();
+                    Console.WriteLine($"!!! Ответ должен быть в виде числа в диапазоне от {int.MinValue} до {int.MaxValue}. Введите ответ еще раз !!!");
+                }
+            }
+            while (!tryParseAnswer);
+
+            return answer;
+        }
+
+        static int CheckContainAnswerInAllowRange(int[] rangeAnswer, int answer)
+        {
+            if (rangeAnswer != null)
+            {
+                while (!rangeAnswer.Contains(answer))
+                {
+                    BeepSounds.WrongAnswer();
+                    Console.WriteLine($"!!! Указанного пункта меню не обнаружено. Выберите повторно !!!");
+                    answer = CheckIntRangeAnswerUser();
+                }
+            }
+
+            return answer;
+        }
+
+        private static void StartTest()
         {
             BeepSounds.StartGame();
 
@@ -46,23 +117,22 @@ namespace GeniyIdiotConsoleApp
             Console.ForegroundColor = returnFontColorToDefault;
         }
 
-        static int GetAnswerOnQuestion()
+        private static void AddQuestionFromConsole()
         {
-            bool tryParseAnswer;
-            int answer = int.MinValue;
             do
             {
-                tryParseAnswer = int.TryParse(Console.ReadLine(), out answer);
-                if (!tryParseAnswer)
-                {
-                    BeepSounds.WrongAnswer();
-                    Console.WriteLine($"!!! Ответ должен быть в виде числа в диапазоне от {int.MinValue} до {int.MaxValue}. Введите ответ еще раз !!!");
-                }
-            }
-            while (!tryParseAnswer);
+                Console.WriteLine("Введите свой вопрос:");
+                string questionForAdd = Console.ReadLine();
+                Console.WriteLine("Введите ответ на него:");
+                string answerOnQuestionForAdd = Console.ReadLine();
 
-            return answer;
+                string questionsAnswersPath = GetQuestionsAnswersFilePath();
+                File.AppendAllText(questionsAnswersPath, questionForAdd + ";" + answerOnQuestionForAdd + Environment.NewLine);
+
+                Console.WriteLine("Вопрос успешно добавлен. Желаете добавить еще один?");
+            } while (GetAnswerFromUser());
         }
+
 
         static string CalcDiagnose(float percent)
         {
@@ -78,10 +148,11 @@ namespace GeniyIdiotConsoleApp
 
         static float GetPercentCorrectAnswers()
         {
+            string questionsAnswersPath = GetQuestionsAnswersFilePath();
+
             int countRightAnswers = 0;
 
-            string questionsAnswersPath = "QuestionsAnswers.txt";
-            var questionsAnswers = File.ReadAllText(questionsAnswersPath).Split(Environment.NewLine).OrderBy(r => new Random().Next()).ToList();
+            var questionsAnswers = File.ReadAllText(questionsAnswersPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
 
             foreach (var item in questionsAnswers)
             {
