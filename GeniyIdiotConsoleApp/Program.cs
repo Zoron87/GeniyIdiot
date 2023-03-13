@@ -9,6 +9,7 @@ namespace GeniyIdiotConsoleApp
 {
     internal class Program
     {
+        const string questionsAnswersPath = "QuestionsAnswers.txt";
 
         static void Main(string[] args)
         {
@@ -36,13 +37,6 @@ namespace GeniyIdiotConsoleApp
             }
         }
 
-        static string GetQuestionsAnswersFilePath()
-        {
-            string questionsAnswersPath = "QuestionsAnswers.txt";
-
-            return questionsAnswersPath;
-        }
-
         static int GetAnswerOnQuestion(int[] rangeAnswer = null)
         {
             int answer = CheckIntRangeAnswerUser();
@@ -50,7 +44,6 @@ namespace GeniyIdiotConsoleApp
             answer = CheckContainAnswerInAllowRange(rangeAnswer, answer);
 
             return answer;
-
         }
 
         static int CheckIntRangeAnswerUser()
@@ -128,9 +121,8 @@ namespace GeniyIdiotConsoleApp
                 Console.WriteLine("Введите свой вопрос:");
                 string questionForAdd = Console.ReadLine();
                 Console.WriteLine("Введите ответ на него:");
-                string answerOnQuestionForAdd = Console.ReadLine();
+                int answerOnQuestionForAdd = CheckIntRangeAnswerUser();
 
-                string questionsAnswersPath = GetQuestionsAnswersFilePath();
                 File.AppendAllText(questionsAnswersPath, questionForAdd + ";" + answerOnQuestionForAdd + Environment.NewLine);
 
                 Console.WriteLine("Вопрос успешно добавлен. Желаете добавить еще один?");
@@ -141,7 +133,6 @@ namespace GeniyIdiotConsoleApp
         {
             do
             {
-                string questionsAnswersPath = GetQuestionsAnswersFilePath();
                 var questions = File.ReadAllLines(questionsAnswersPath).ToList();
 
                 int[] allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
@@ -187,8 +178,6 @@ namespace GeniyIdiotConsoleApp
 
         static float GetPercentCorrectAnswers()
         {
-            string questionsAnswersPath = GetQuestionsAnswersFilePath();
-
             int countRightAnswers = 0;
 
             var questionsAnswers = File.ReadAllText(questionsAnswersPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
@@ -255,14 +244,14 @@ namespace GeniyIdiotConsoleApp
             foreach (var statOfOneGame in statsOfAllGames)
             {
                 var statOfOneGameArr = statOfOneGame.Split(";");
-                Console.ForegroundColor = (CheckCurGameStatForChangeColor(statOfOneGameArr[2], statOfOneGameArr[1], name, percentRightAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
+                Console.ForegroundColor = (IsCurrentGameStatistic(statOfOneGameArr[2], statOfOneGameArr[1], name, percentRightAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
                 
                 string printGameStat = OutputFormatConsole(statOfOneGameArr[0], statOfOneGameArr[1], statOfOneGameArr[2]);
                 Console.WriteLine(printGameStat);
             }
         }
 
-        static bool CheckCurGameStatForChangeColor(string nameUserCheckGame, string statCheckGame, string nameUserCurGame, string statCurGame)
+        static bool IsCurrentGameStatistic(string nameUserCheckGame, string statCheckGame, string nameUserCurGame, string statCurGame)
         {
             if (nameUserCheckGame == nameUserCurGame && statCheckGame == statCurGame)
                 return true;
