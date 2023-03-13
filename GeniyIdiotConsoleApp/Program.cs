@@ -18,9 +18,9 @@ namespace GeniyIdiotConsoleApp
 
         private static void InitializateStartMenu()
         {
-            Console.WriteLine("Выберите подходящий пункт: \n 1. Пройти викторину \n 2. Добавить свой вопрос");
+            Console.WriteLine("Выберите подходящий пункт: \n 1. Пройти викторину \n 2. Добавить свой вопрос \n 3. Удалить вопрос из списка");
 
-            int[] allowedMenuOption = new int[] { 1, 2 };
+            int[] allowedMenuOption = new int[] { 1, 2, 3 };
             int answerMenuOption = GetAnswerOnQuestion(allowedMenuOption);
 
             switch (answerMenuOption)
@@ -30,6 +30,9 @@ namespace GeniyIdiotConsoleApp
                     break;
                 case 2:
                     AddQuestionFromConsole();
+                    break;
+                case 3:
+                    DeleteQuestionFromConsole();
                     break;
             }
         }
@@ -41,7 +44,6 @@ namespace GeniyIdiotConsoleApp
             answer = CheckContainAnswerInAllowRange(rangeAnswer, answer);
 
             return answer;
-
         }
 
         static int CheckIntRangeAnswerUser()
@@ -125,6 +127,40 @@ namespace GeniyIdiotConsoleApp
 
                 Console.WriteLine("Вопрос успешно добавлен. Желаете добавить еще один?");
             } while (GetAnswerFromUser());
+        }
+
+        private static void DeleteQuestionFromConsole()
+        {
+            do
+            {
+                var questions = File.ReadAllLines(questionsAnswersPath).ToList();
+
+                int[] allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
+
+                Console.WriteLine("Выводим список имеющихся вопросов:");
+
+                int index = 0;
+                questions.ForEach(s =>
+                {
+                    index++;
+                    Console.WriteLine($"{index}. {s}");
+                });
+
+                Console.WriteLine("Укажите номер вопроса, который необходимо удалить?");
+
+                int answer = GetAnswerOnQuestion(allowedNumbersForDeleteQuestion);
+
+                questions.RemoveAt(answer - 1);
+
+                File.WriteAllLines(questionsAnswersPath, questions);
+
+                Console.WriteLine($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
+            } while (GetAnswerFromUser());
+        }
+
+        private static int[] FillArrayFromRange(int startNumber, int count)
+        {
+            return Enumerable.Range(startNumber, count).ToArray();
         }
 
 

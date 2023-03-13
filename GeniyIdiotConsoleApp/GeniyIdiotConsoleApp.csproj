@@ -11,7 +11,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="QuestionsAnswers.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="StatisticOfGames.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
