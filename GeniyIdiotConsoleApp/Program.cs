@@ -9,6 +9,7 @@ namespace GeniyIdiotConsoleApp
 {
     internal class Program
     {
+        const string questionsAnswersPath = "QuestionsAnswers.txt";
 
         static void Main(string[] args)
         {
@@ -31,12 +32,6 @@ namespace GeniyIdiotConsoleApp
                     AddQuestionFromConsole();
                     break;
             }
-        }
-        static string GetQuestionsAnswersFilePath()
-        {
-            string questionsAnswersPath = "QuestionsAnswers.txt";
-
-            return questionsAnswersPath;
         }
 
         static int GetAnswerOnQuestion(int[] rangeAnswer = null)
@@ -124,9 +119,8 @@ namespace GeniyIdiotConsoleApp
                 Console.WriteLine("Введите свой вопрос:");
                 string questionForAdd = Console.ReadLine();
                 Console.WriteLine("Введите ответ на него:");
-                string answerOnQuestionForAdd = Console.ReadLine();
+                int answerOnQuestionForAdd = CheckIntRangeAnswerUser();
 
-                string questionsAnswersPath = GetQuestionsAnswersFilePath();
                 File.AppendAllText(questionsAnswersPath, questionForAdd + ";" + answerOnQuestionForAdd + Environment.NewLine);
 
                 Console.WriteLine("Вопрос успешно добавлен. Желаете добавить еще один?");
@@ -148,8 +142,6 @@ namespace GeniyIdiotConsoleApp
 
         static float GetPercentCorrectAnswers()
         {
-            string questionsAnswersPath = GetQuestionsAnswersFilePath();
-
             int countRightAnswers = 0;
 
             var questionsAnswers = File.ReadAllText(questionsAnswersPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
