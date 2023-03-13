@@ -114,6 +114,112 @@ namespace GeniyIdiotConsoleApp
             Console.ForegroundColor = returnFontColorToDefault;
         }
 
+        static float GetPercentCorrectAnswers()
+        {
+            int countRightAnswers = 0;
+
+            var questionsAnswers = File.ReadAllText(questionsAnswersPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
+
+            foreach (var item in questionsAnswers)
+            {
+                Console.WriteLine(item.Split(";")[0]);
+
+                int answer = GetAnswerOnQuestion();
+                if (int.Parse(item.Split(";")[1]) == answer) countRightAnswers++;
+            }
+
+            float percentRightAnswers = (float)countRightAnswers / questionsAnswers.Count * 100;
+
+            if (percentRightAnswers >= 70) BeepSounds.GoodDiagnose();
+            else BeepSounds.BadDiagnose();
+
+            return percentRightAnswers;
+        }
+
+        static string CalcDiagnose(float percent)
+        {
+            string diagnosesAndPercentPath = "DiagnosesAndPercent.txt";
+
+            var diagnosesAndPercent = File.ReadAllText(diagnosesAndPercentPath).Split(Environment.NewLine).ToList();
+
+            var result = diagnosesAndPercent.Select(x => x.Split(";")).LastOrDefault(x => int.Parse(x[0]) <= percent);
+
+            if (result != null) return result[1];
+            else return diagnosesAndPercent[0].Split(";")[1];
+        }
+
+        static void SavesStatsInFile(string statsOfGamePath, string diagnose, float percentRightAnswers, string name)
+        {
+            string currentGameStat = String.Join(';', new[] { diagnose, percentRightAnswers.ToString("0.00"), name }) + Environment.NewLine;
+            File.AppendAllText(statsOfGamePath, currentGameStat);
+        }
+
+        static bool GetAnswerFromUser(string message = "Укажите ДА / НЕТ", string agree = "да", string disagee = "нет")
+        {
+            string answer = Console.ReadLine().ToLower();
+            do
+            {
+                if (answer == agree.ToLower()) return true;
+                if (answer == disagee.ToLower()) return false;
+
+                Console.WriteLine(message);
+                answer = Console.ReadLine().ToLower();
+            } while (true);
+
+            return false;
+        }
+
+        static void OutputStatsFromFile(string pathToFileWithStatsOfGame, string name, float percentRightAnswers)
+        {
+            Console.Clear();
+            var statsOfAllGames = SortGameStatByDesc(pathToFileWithStatsOfGame);
+
+            string printHeaderGameStat = OutputFormatConsole("Диагноз", "Результат", "ФИО");
+            Console.WriteLine(printHeaderGameStat);
+            Console.WriteLine();
+
+            foreach (var statOfOneGame in statsOfAllGames)
+            {
+                var statOfOneGameArr = statOfOneGame.Split(";");
+                Console.ForegroundColor = (IsCurrentGameStatistic(statOfOneGameArr[2], statOfOneGameArr[1], name, percentRightAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
+
+                string printGameStat = OutputFormatConsole(statOfOneGameArr[0], statOfOneGameArr[1], statOfOneGameArr[2]);
+                Console.WriteLine(printGameStat);
+            }
+        }
+
+        static IEnumerable<string> SortGameStatByDesc(string pathToFileWithStatsOfGame)
+        {
+            return File.ReadAllText(pathToFileWithStatsOfGame).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
+                .OrderByDescending(s => s, new StatsComparer()).Select(s => s);
+        }
+
+        class StatsComparer : IComparer<string>
+        {
+            public int Compare(string stat1, string stat2)
+            {
+                var statsGame1 = float.Parse(stat1.Split(";")[1].Trim());
+
+                var statsGame2 = float.Parse(stat2.Split(";")[1].Trim());
+
+                if (statsGame1 < statsGame2) return -1;
+                if (statsGame1 > statsGame2) return 1;
+                return 0;
+            }
+        }
+
+        static bool IsCurrentGameStatistic(string nameUserCheckGame, string statCheckGame, string nameUserCurGame, string statCurGame)
+        {
+            if (nameUserCheckGame == nameUserCurGame && statCheckGame == statCurGame)
+                return true;
+            return false;
+        }
+
+        static string OutputFormatConsole(string param1, string param2, string param3)
+        {
+            return String.Format("{0,-10} {1, -9:0.00} {2, 10} ", param1, param2, param3);
+        }
+
         private static void AddQuestionFromConsole()
         {
             do
@@ -161,112 +267,6 @@ namespace GeniyIdiotConsoleApp
         private static int[] FillArrayFromRange(int startNumber, int count)
         {
             return Enumerable.Range(startNumber, count).ToArray();
-        }
-
-
-        static string CalcDiagnose(float percent)
-        {
-            string diagnosesAndPercentPath = "DiagnosesAndPercent.txt";
-
-            var diagnosesAndPercent = File.ReadAllText(diagnosesAndPercentPath).Split(Environment.NewLine).ToList();
-
-            var result = diagnosesAndPercent.Select(x => x.Split(";")).LastOrDefault(x => int.Parse(x[0]) <= percent);
-
-            if (result != null) return result[1];
-            else return diagnosesAndPercent[0].Split(";")[1];
-        }
-
-        static float GetPercentCorrectAnswers()
-        {
-            int countRightAnswers = 0;
-
-            var questionsAnswers = File.ReadAllText(questionsAnswersPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
-
-            foreach (var item in questionsAnswers)
-            {
-                Console.WriteLine(item.Split(";")[0]);
-
-                int answer = GetAnswerOnQuestion();
-                if (int.Parse(item.Split(";")[1]) == answer) countRightAnswers++;
-            }
-
-            float percentRightAnswers = (float)countRightAnswers / questionsAnswers.Count * 100;
-
-            if (percentRightAnswers >= 70) BeepSounds.GoodDiagnose();
-            else BeepSounds.BadDiagnose();
-
-            return percentRightAnswers;
-        }
-
-        static bool GetAnswerFromUser(string message = "Укажите ДА / НЕТ", string agree = "да", string disagee = "нет")
-        {
-            string answer = Console.ReadLine().ToLower();
-            do
-            {
-                if (answer == agree.ToLower()) return true;
-                if (answer == disagee.ToLower()) return false;
-
-                Console.WriteLine(message);
-                answer = Console.ReadLine().ToLower();
-            } while (true);
-
-            return false;
-        }
-
-        class StatsComparer : IComparer<string>
-        {
-            public int Compare(string stat1, string stat2)
-            {
-                var statsGame1 = float.Parse(stat1.Split(";")[1].Trim());
-
-                var statsGame2 = float.Parse(stat2.Split(";")[1].Trim());
-
-                if (statsGame1 < statsGame2) return -1;
-                if (statsGame1 > statsGame2) return 1;
-                return 0;
-            }
-        }
-        static void SavesStatsInFile(string statsOfGamePath, string diagnose, float percentRightAnswers, string name)
-        {
-            string currentGameStat = String.Join(';', new[] { diagnose, percentRightAnswers.ToString("0.00"), name }) + Environment.NewLine;
-            File.AppendAllText(statsOfGamePath, currentGameStat);
-        }
-
-        static void OutputStatsFromFile(string pathToFileWithStatsOfGame, string name, float percentRightAnswers)
-        {
-            Console.Clear();
-            var statsOfAllGames = SortGameStatByDesc(pathToFileWithStatsOfGame);
-
-            string printHeaderGameStat = OutputFormatConsole("Диагноз", "Результат", "ФИО");
-            Console.WriteLine(printHeaderGameStat);
-            Console.WriteLine();
-
-            foreach (var statOfOneGame in statsOfAllGames)
-            {
-                var statOfOneGameArr = statOfOneGame.Split(";");
-                Console.ForegroundColor = (IsCurrentGameStatistic(statOfOneGameArr[2], statOfOneGameArr[1], name, percentRightAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
-                
-                string printGameStat = OutputFormatConsole(statOfOneGameArr[0], statOfOneGameArr[1], statOfOneGameArr[2]);
-                Console.WriteLine(printGameStat);
-            }
-        }
-
-        static bool IsCurrentGameStatistic(string nameUserCheckGame, string statCheckGame, string nameUserCurGame, string statCurGame)
-        {
-            if (nameUserCheckGame == nameUserCurGame && statCheckGame == statCurGame)
-                return true;
-            return false;
-        }
-
-        private static IEnumerable<string> SortGameStatByDesc(string pathToFileWithStatsOfGame)
-        {
-            return File.ReadAllText(pathToFileWithStatsOfGame).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
-                .OrderByDescending(s => s, new StatsComparer()).Select(s => s);
-        }
-
-        static string OutputFormatConsole(string param1, string param2, string param3)
-        {
-            return String.Format("{0,-10} {1, -9:0.00} {2, 10} ", param1, param2, param3);
         }
 
         static class BeepSounds
