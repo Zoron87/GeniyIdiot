@@ -145,14 +145,14 @@ namespace GeniyIdiotConsoleApp
             foreach (var statOfOneGame in statsOfAllGames)
             {
                 var statOfOneGameArr = statOfOneGame.Split(";");
-                Console.ForegroundColor = (CheckCurGameStatForChangeColor(statOfOneGameArr[2], statOfOneGameArr[1], name, percentRightAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
+                Console.ForegroundColor = (IsCurrentGameStatistic(statOfOneGameArr[2], statOfOneGameArr[1], name, percentRightAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
                 
                 string printGameStat = OutputFormatConsole(statOfOneGameArr[0], statOfOneGameArr[1], statOfOneGameArr[2]);
                 Console.WriteLine(printGameStat);
             }
         }
 
-        static bool CheckCurGameStatForChangeColor(string nameUserCheckGame, string statCheckGame, string nameUserCurGame, string statCurGame)
+        static bool IsCurrentGameStatistic(string nameUserCheckGame, string statCheckGame, string nameUserCurGame, string statCurGame)
         {
             if (nameUserCheckGame == nameUserCurGame && statCheckGame == statCurGame)
                 return true;
