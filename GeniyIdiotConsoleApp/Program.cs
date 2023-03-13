@@ -9,7 +9,6 @@ namespace GeniyIdiotConsoleApp
 {
     internal class Program
     {
-        
         static void Main(string[] args)
         {
             BeepSounds.StartGame();
