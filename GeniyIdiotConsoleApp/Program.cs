@@ -210,9 +210,7 @@ namespace GeniyIdiotConsoleApp
 
         static bool IsCurrentGameStatistic(string nameUserCheckGame, string statCheckGame, string nameUserCurGame, string statCurGame)
         {
-            if (nameUserCheckGame == nameUserCurGame && statCheckGame == statCurGame)
-                return true;
-            return false;
+            return nameUserCheckGame == nameUserCurGame && statCheckGame == statCurGame;
         }
 
         static string OutputFormatConsole(string param1, string param2, string param3)
