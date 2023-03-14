@@ -3,6 +3,7 @@ using System.IO;
 using System;
 using System.Linq;
 using System.Threading;
+using System.Timers;
 
 
 namespace GeniyIdiotConsoleApp
@@ -10,6 +11,10 @@ namespace GeniyIdiotConsoleApp
     internal class Program
     {
         const string questionsAnswersPath = "QuestionsAnswers.txt";
+
+        static System.Timers.Timer gameTimer = new System.Timers.Timer(1000);
+        static int timeoutForAnswerOnQuestion = 10;
+        static string testQuestion;
 
         static void Main(string[] args)
         {
@@ -53,6 +58,12 @@ namespace GeniyIdiotConsoleApp
             do
             {
                 tryParseAnswer = int.TryParse(Console.ReadLine(), out answer);
+
+                if (timeoutForAnswerOnQuestion <= 0)
+                {
+                    FinishGame();
+                }
+
                 if (!tryParseAnswer)
                 {
                     BeepSounds.WrongAnswer();
@@ -77,6 +88,12 @@ namespace GeniyIdiotConsoleApp
             }
 
             return answer;
+        }
+
+        static void FinishGame()
+        {
+            Console.WriteLine("Вы не успели ответить в отведенное время. Игра завершена. Попробуйте еще раз!");
+            throw new Exception();
         }
 
         private static void StartTest()
@@ -120,13 +137,27 @@ namespace GeniyIdiotConsoleApp
 
             var questionsAnswers = File.ReadAllText(questionsAnswersPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
 
+            gameTimer.AutoReset = true;
+            gameTimer.Elapsed += timer_Elapsed;
+            gameTimer.Start();
+
             foreach (var item in questionsAnswers)
             {
-                Console.WriteLine(item.Split(";")[0]);
+                timeoutForAnswerOnQuestion = 10;  // Reset timer for each question
+
+                testQuestion = item.Split(";")[0];
+
+                Console.Clear();
+                Console.WriteLine("=================================================");
+                Console.WriteLine("ВОПРОС - " + testQuestion);
+                Console.WriteLine("БЫСТРЕЕ ОТВЕЧАЙ НА ВОПРОС!");
+                Console.WriteLine("ВРЕМЕНИ НА ОТВЕТ:  10 СЕКУНД");
+                Console.WriteLine("=================================================");
 
                 int answer = GetAnswerOnQuestion();
                 if (int.Parse(item.Split(";")[1]) == answer) countRightAnswers++;
             }
+            gameTimer.Stop();
 
             float percentRightAnswers = (float)countRightAnswers / questionsAnswers.Count * 100;
 
@@ -297,6 +328,25 @@ namespace GeniyIdiotConsoleApp
                 Thread.Sleep(50);
                 Console.Beep(250, 500);
             }
+        }
+
+        private static void timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            timeoutForAnswerOnQuestion -= 1;
+
+            if (timeoutForAnswerOnQuestion == 0)
+            {
+                Console.Clear();
+                Console.WriteLine("==============================================");
+                Console.WriteLine("! ! ! G A M E   O V E R ! ! ! !");
+                Console.WriteLine("ВРЕМЯ ВЫШЛО. ТЕСТ ЗАВЕРШЕН! ! !");
+                Console.WriteLine("==============================================");
+
+                gameTimer.Close();
+                gameTimer.Dispose();
+            }
+
+            GC.Collect();
         }
     }
 }
