@@ -19,6 +19,9 @@ namespace GeniyIdiotConsoleApp
         static void Main(string[] args)
         {
             InitializateStartMenu();
+
+            gameTimer.Close();
+            gameTimer.Dispose();
         }
 
         private static void InitializateStartMenu()
@@ -53,15 +56,17 @@ namespace GeniyIdiotConsoleApp
 
         static int CheckIntRangeAnswerUser()
         {
-            bool tryParseAnswer;
+            bool tryParseAnswer = false;
             int answer = int.MinValue;
             do
             {
                 tryParseAnswer = int.TryParse(Console.ReadLine(), out answer);
 
-                if (timeoutForAnswerOnQuestion <= 0)
+                if (gameTimer.Enabled == false && timeoutForAnswerOnQuestion <= 0)
                 {
-                    FinishGame();
+                    timeoutForAnswerOnQuestion = 10;  // Reset timer for each question
+                    gameTimer.Enabled = true;
+                    return int.MinValue;
                 }
 
                 if (!tryParseAnswer)
@@ -86,14 +91,7 @@ namespace GeniyIdiotConsoleApp
                     answer = CheckIntRangeAnswerUser();
                 }
             }
-
             return answer;
-        }
-
-        static void FinishGame()
-        {
-            Console.WriteLine("Вы не успели ответить в отведенное время. Игра завершена. Попробуйте еще раз!");
-            throw new Exception();
         }
 
         private static void StartTest()
@@ -143,8 +141,6 @@ namespace GeniyIdiotConsoleApp
 
             foreach (var item in questionsAnswers)
             {
-                timeoutForAnswerOnQuestion = 10;  // Reset timer for each question
-
                 testQuestion = item.Split(";")[0];
 
                 Console.Clear();
@@ -157,6 +153,7 @@ namespace GeniyIdiotConsoleApp
                 int answer = GetAnswerOnQuestion();
                 if (int.Parse(item.Split(";")[1]) == answer) countRightAnswers++;
             }
+
             gameTimer.Stop();
 
             float percentRightAnswers = (float)countRightAnswers / questionsAnswers.Count * 100;
@@ -338,14 +335,12 @@ namespace GeniyIdiotConsoleApp
             {
                 Console.Clear();
                 Console.WriteLine("==============================================");
-                Console.WriteLine("! ! ! G A M E   O V E R ! ! ! !");
-                Console.WriteLine("ВРЕМЯ ВЫШЛО. ТЕСТ ЗАВЕРШЕН! ! !");
+                Console.WriteLine("ВРЕМЯ НА ОТВЕТ ВЫШЛО!");
+                Console.WriteLine("НАЖМИТЕ ENTER ДЛЯ ПЕРЕХОДА К СЛЕДУЮЩЕМУ ВОПРОСУ!");
                 Console.WriteLine("==============================================");
 
-                gameTimer.Close();
-                gameTimer.Dispose();
+                gameTimer.Stop();
             }
-
             GC.Collect();
         }
     }
