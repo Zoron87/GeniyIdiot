@@ -28,7 +28,7 @@ namespace GeniyIdiotConsoleApp
         {
             int countRightAnswers = 0;
 
-            var questionsAnswers = Game.GetInfoFromFile(questionsAnswersPath).Split("\n", StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
+            var questionsAnswers = FileSystem.GetInfoFromFile(questionsAnswersPath).Split("\n", StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
 
             gameTimer.AutoReset = true;
             gameTimer.Elapsed += Game.timer_Elapsed;

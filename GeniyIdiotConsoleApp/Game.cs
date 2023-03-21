@@ -95,17 +95,7 @@ namespace GeniyIdiotConsoleApp
             return String.Format("{0,-10} {1, -9:0.00} {2, 10} ", param1, param2, param3);
         }
 
-        public static void SaveInfoInFile(string filePath, string data, bool isAppend)
-        {
-            if (isAppend) File.AppendAllText(filePath, data);
-            else File.WriteAllText(filePath, data);
-            
-        }
-
-        public static string GetInfoFromFile(string filePath)
-        {
-            return File.ReadAllText(filePath);
-        }
+       
 
         public static class BeepSounds
         {

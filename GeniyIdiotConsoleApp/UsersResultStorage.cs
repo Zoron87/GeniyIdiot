@@ -14,12 +14,12 @@ namespace GeniyIdiotConsoleApp
         public static void SavesStatsInFile(string statOfGamesPath, User user)
         {
             string currentGameStat = String.Join(';', new[] { user.Diagnose, user.PercentCorrectAnswers.ToString("0.00"), user.Name }) + Environment.NewLine;
-            Game.SaveInfoInFile(statOfGamesPath, currentGameStat, true);
+            FileSystem.SaveInfoInFile(statOfGamesPath, currentGameStat, true);
         }
 
         public static IEnumerable<string> GetStatsFromFile(string statOfGamesPath, bool IsOrderByDescending)
         {
-            var statsFromFile = Game.GetInfoFromFile(statOfGamesPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            var statsFromFile = FileSystem.GetInfoFromFile(statOfGamesPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
            
             if (!IsOrderByDescending) return statsFromFile;
 

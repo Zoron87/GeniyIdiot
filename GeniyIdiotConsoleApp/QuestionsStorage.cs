@@ -20,7 +20,7 @@ namespace GeniyIdiotConsoleApp
 
                 var newQuestion = new Question(questionForAdd, answerOnQuestionForAdd);
 
-                Game.SaveInfoInFile(questionsAnswersPath, newQuestion.ToString(), true);
+                FileSystem.SaveInfoInFile(questionsAnswersPath, newQuestion.ToString(), true);
 
                 Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
             } while (user.GetAnswerFromUser());
@@ -30,7 +30,7 @@ namespace GeniyIdiotConsoleApp
         {
             do
             {
-                var questions = Game.GetInfoFromFile(questionsAnswersPath).Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList();
+                var questions = FileSystem.GetInfoFromFile(questionsAnswersPath).Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList();
 
                 var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
 
@@ -49,7 +49,7 @@ namespace GeniyIdiotConsoleApp
 
                 questions.RemoveAt(answer - 1);
 
-               Game.SaveInfoInFile(questionsAnswersPath, String.Join("\n", questions), false);
+                FileSystem.SaveInfoInFile(questionsAnswersPath, String.Join("\n", questions), false);
 
                 Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
             } while (user.GetAnswerFromUser());
