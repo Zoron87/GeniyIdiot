@@ -1,133 +1,136 @@
-﻿using System.IO;
-using System;
+﻿using System;
+using System.IO;
 using System.Linq;
-
+using System.Timers;
 
 namespace GeniyIdiotConsoleApp
 {
-    internal partial class Program
+    public class User
     {
-        public class User
+        private const string questionsAnswersPath = "QuestionsAnswers.txt";
+        private const string diagnosesAndPercentPath = "DiagnosesAndPercent.txt";
+
+        static System.Timers.Timer gameTimer = new System.Timers.Timer(1000);
+        static int timeoutForAnswerOnQuestion = 10;
+        static string testQuestion;
+
+        private string name;
+        private string diagnose;
+        private float percentCorrectAnswers;
+
+        public string Name { get; set; }
+
+        public float PercentCorrectAnswers { get; private set; }
+
+        public string Diagnose { get; private set; }
+
+        public void GetPercentCorrectAnswers()
         {
-            private string name;
-            private string diagnose;
-            private float percentCorrectAnswers;
+            int countRightAnswers = 0;
 
-            public string Name {get; set; }
+            var questionsAnswers = Game.GetInfoFromFile(questionsAnswersPath).Split("\n", StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
 
-            public float PercentCorrectAnswers { get; private set; }
+            gameTimer.AutoReset = true;
+            gameTimer.Elapsed += Game.timer_Elapsed;
+            gameTimer.Start();
 
-            public string Diagnose { get; private set; }
-
-            public void GetPercentCorrectAnswers()
+            foreach (var item in questionsAnswers)
             {
-                int countRightAnswers = 0;
+                testQuestion = item.Split(";")[0];
 
-                var questionsAnswers = File.ReadAllText(questionsAnswersPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
+                Console.Clear();
+                Logs.OuputToConsole("=================================================");
+                Logs.OuputToConsole("ВОПРОС - " + testQuestion);
+                Logs.OuputToConsole("БЫСТРЕЕ ОТВЕЧАЙ НА ВОПРОС!");
+                Logs.OuputToConsole("ВРЕМЕНИ НА ОТВЕТ:  10 СЕКУНД");
+                Logs.OuputToConsole("=================================================");
 
-                gameTimer.AutoReset = true;
-                gameTimer.Elapsed += UsersResultStorage.timer_Elapsed;
-                gameTimer.Start();
+                int answer = GetAnswerOnQuestion();
+                if (int.Parse(item.Split(";")[1]) == answer) countRightAnswers++;
+            }
 
-                foreach (var item in questionsAnswers)
+            gameTimer.Stop();
+
+            float percentRightAnswers = (float)countRightAnswers / questionsAnswers.Count * 100;
+
+            if (percentRightAnswers >= 70) Game.BeepSounds.GoodDiagnose();
+            else Game.BeepSounds.BadDiagnose();
+
+            PercentCorrectAnswers = percentRightAnswers;
+        }
+
+        public void CalcDiagnose(User user)
+        {
+            var diagnosesAndPercent = File.ReadAllText(diagnosesAndPercentPath).Split(Environment.NewLine).ToList();
+
+            var result = diagnosesAndPercent.Select(x => x.Split(";")).LastOrDefault(x => int.Parse(x[0]) <= user.PercentCorrectAnswers);
+
+            if (result != null) user.Diagnose = result[1];
+            else user.Diagnose = diagnosesAndPercent[0].Split(";")[1];
+        }
+
+        public int GetAnswerOnQuestion(int[] rangeAnswer = null)
+        {
+            int answer = CheckIntRangeAnswerUser();
+
+            answer = CheckContainAnswerInAllowRange(rangeAnswer, answer);
+
+            return answer;
+        }
+
+        public int CheckIntRangeAnswerUser()
+        {
+            bool tryParseAnswer = false;
+            int answer = int.MinValue;
+            do
+            {
+                tryParseAnswer = int.TryParse(Logs.InputFromConsole(), out answer);
+
+                if (gameTimer.Enabled == false && timeoutForAnswerOnQuestion <= 0)
                 {
-                    testQuestion = item.Split(";")[0];
-
-                    Console.Clear();
-                    Console.WriteLine("=================================================");
-                    Console.WriteLine("ВОПРОС - " + testQuestion);
-                    Console.WriteLine("БЫСТРЕЕ ОТВЕЧАЙ НА ВОПРОС!");
-                    Console.WriteLine("ВРЕМЕНИ НА ОТВЕТ:  10 СЕКУНД");
-                    Console.WriteLine("=================================================");
-
-                    int answer = GetAnswerOnQuestion();
-                    if (int.Parse(item.Split(";")[1]) == answer) countRightAnswers++;
+                    timeoutForAnswerOnQuestion = 10;  // Reset timer for each question
+                    gameTimer.Enabled = true;
+                    return int.MinValue;
                 }
 
-                gameTimer.Stop();
-
-                float percentRightAnswers = (float)countRightAnswers / questionsAnswers.Count * 100;
-
-                if (percentRightAnswers >= 70) Game.BeepSounds.GoodDiagnose();
-                else Game.BeepSounds.BadDiagnose();
-
-                PercentCorrectAnswers = percentRightAnswers;
-            }
-
-            public void CalcDiagnose(User user)
-            {
-                var diagnosesAndPercent = File.ReadAllText(diagnosesAndPercentPath).Split(Environment.NewLine).ToList();
-
-                var result = diagnosesAndPercent.Select(x => x.Split(";")).LastOrDefault(x => int.Parse(x[0]) <= user.PercentCorrectAnswers);
-
-                if (result != null) user.Diagnose = result[1];
-                else user.Diagnose = diagnosesAndPercent[0].Split(";")[1];
-            }
-
-            public int GetAnswerOnQuestion(int[] rangeAnswer = null)
-            {
-                int answer = CheckIntRangeAnswerUser();
-
-                answer = CheckContainAnswerInAllowRange(rangeAnswer, answer);
-
-                return answer;
-            }
-
-            public int CheckIntRangeAnswerUser()
-            {
-                bool tryParseAnswer = false;
-                int answer = int.MinValue;
-                do
+                if (!tryParseAnswer)
                 {
-                    tryParseAnswer = int.TryParse(Console.ReadLine(), out answer);
-
-                    if (gameTimer.Enabled == false && timeoutForAnswerOnQuestion <= 0)
-                    {
-                        timeoutForAnswerOnQuestion = 10;  // Reset timer for each question
-                        gameTimer.Enabled = true;
-                        return int.MinValue;
-                    }
-
-                    if (!tryParseAnswer)
-                    {
-                        Game.BeepSounds.WrongAnswer();
-                        Console.WriteLine($"!!! Ответ должен быть в виде числа в диапазоне от {int.MinValue} до {int.MaxValue}. Введите ответ еще раз !!!");
-                    }
+                    Game.BeepSounds.WrongAnswer();
+                    Logs.OuputToConsole($"!!! Ответ должен быть в виде числа в диапазоне от {int.MinValue} до {int.MaxValue}. Введите ответ еще раз !!!");
                 }
-                while (!tryParseAnswer);
-
-                return answer;
             }
+            while (!tryParseAnswer);
 
-            private int CheckContainAnswerInAllowRange(int[] rangeAnswer, int answer)
+            return answer;
+        }
+
+        private int CheckContainAnswerInAllowRange(int[] rangeAnswer, int answer)
+        {
+            if (rangeAnswer != null)
             {
-                if (rangeAnswer != null)
+                while (!rangeAnswer.Contains(answer))
                 {
-                    while (!rangeAnswer.Contains(answer))
-                    {
-                        Game.BeepSounds.WrongAnswer();
-                        Console.WriteLine($"!!! Указанного пункта меню не обнаружено. Выберите повторно !!!");
-                        answer = CheckIntRangeAnswerUser();
-                    }
+                    Game.BeepSounds.WrongAnswer();
+                    Logs.OuputToConsole($"!!! Указанного пункта меню не обнаружено. Выберите повторно !!!");
+                    answer = CheckIntRangeAnswerUser();
                 }
-                return answer;
             }
+            return answer;
+        }
 
-            public bool GetAnswerFromUser(string message = "Укажите ДА / НЕТ", string agree = "да", string disagee = "нет")
+        public bool GetAnswerFromUser(string message = "Укажите ДА / НЕТ", string agree = "да", string disagee = "нет")
+        {
+            string answer = Logs.InputFromConsole().ToLower();
+            do
             {
-                string answer = Console.ReadLine().ToLower();
-                do
-                {
-                    if (answer == agree.ToLower()) return true;
-                    if (answer == disagee.ToLower()) return false;
+                if (answer == agree.ToLower()) return true;
+                if (answer == disagee.ToLower()) return false;
 
-                    Console.WriteLine(message);
-                    answer = Console.ReadLine().ToLower();
-                } while (true);
+                Logs.OuputToConsole(message);
+                answer = Logs.InputFromConsole().ToLower();
+            } while (true);
 
-                return false;
-            }
-
+            return false;
         }
     }
 }

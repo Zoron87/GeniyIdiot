@@ -1,4 +1,6 @@
-﻿public class Question
+﻿using System;
+
+public class Question
 {
     public string Text;
     public int Answer;
@@ -11,6 +13,6 @@
 
     public override string ToString()
     {
-        return $"{Text};{Answer} \r\n";
+        return $"{Text};{Answer}{Environment.NewLine}";
     }
 }

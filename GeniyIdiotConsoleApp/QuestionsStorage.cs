@@ -5,58 +5,59 @@ using System.Linq;
 
 namespace GeniyIdiotConsoleApp
 {
-    internal partial class Program
+    public static class QuestionsStorage
     {
-        public static class QuestionsStorage
+        private const string questionsAnswersPath = "QuestionsAnswers.txt";
+
+        public static void AddQuestionFromConsole(User user)
         {
-            public static void AddQuestionFromConsole(User user)
+            do
             {
-                do
+                Logs.OuputToConsole("Введите свой вопрос:");
+                string questionForAdd = Logs.InputFromConsole();
+                Logs.OuputToConsole("Введите ответ на него:");
+                int answerOnQuestionForAdd = user.CheckIntRangeAnswerUser();
+
+                var newQuestion = new Question(questionForAdd, answerOnQuestionForAdd);
+
+                Game.SaveInfoInFile(questionsAnswersPath, newQuestion.ToString(), true);
+
+                Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
+            } while (user.GetAnswerFromUser());
+        }
+
+        public static void DeleteQuestionFromConsole(User user)
+        {
+            do
+            {
+                var questions = Game.GetInfoFromFile(questionsAnswersPath).Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+                var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
+
+                Logs.OuputToConsole("Выводим список имеющихся вопросов:");
+
+                int index = 0;
+                questions.ForEach(s =>
                 {
-                    Console.WriteLine("Введите свой вопрос:");
-                    string questionForAdd = Console.ReadLine();
-                    Console.WriteLine("Введите ответ на него:");
-                    int answerOnQuestionForAdd = user.CheckIntRangeAnswerUser();
+                    index++;
+                    Logs.OuputToConsole($"{index}. {s}");
+                });
 
-                    File.AppendAllText(questionsAnswersPath, new Question(questionForAdd, answerOnQuestionForAdd).ToString());
+                Logs.OuputToConsole("Укажите номер вопроса, который необходимо удалить?");
 
-                    Console.WriteLine("Вопрос успешно добавлен. Желаете добавить еще один?");
-                } while (user.GetAnswerFromUser());
-            }
+                int answer = user.GetAnswerOnQuestion(allowedNumbersForDeleteQuestion);
 
-            public static void DeleteQuestionFromConsole(User user)
-            {
-                do
-                {
-                    var questions = File.ReadAllLines(questionsAnswersPath).ToList();
+                questions.RemoveAt(answer - 1);
 
-                    var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
+               Game.SaveInfoInFile(questionsAnswersPath, String.Join("\n", questions), false);
 
-                    Console.WriteLine("Выводим список имеющихся вопросов:");
+                Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
+            } while (user.GetAnswerFromUser());
+        }
 
-                    int index = 0;
-                    questions.ForEach(s =>
-                    {
-                        index++;
-                        Console.WriteLine($"{index}. {s}");
-                    });
-
-                    Console.WriteLine("Укажите номер вопроса, который необходимо удалить?");
-
-                    int answer = user.GetAnswerOnQuestion(allowedNumbersForDeleteQuestion);
-
-                    questions.RemoveAt(answer - 1);
-
-                    File.WriteAllLines(questionsAnswersPath, questions);
-
-                    Console.WriteLine($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
-                } while (user.GetAnswerFromUser());
-            }
-
-            private static int[] FillArrayFromRange(int startNumber, int count)
-            {
-                return Enumerable.Range(startNumber, count).ToArray();
-            }
+        private static int[] FillArrayFromRange(int startNumber, int count)
+        {
+            return Enumerable.Range(startNumber, count).ToArray();
         }
     }
 }
