@@ -17,5 +17,10 @@ namespace GeniyIdiotConsoleApp
             gameTimer.Close();
             gameTimer.Dispose();
         }
+
+        public static void MyFunc()
+        {
+            Console.WriteLine(); 
+        }
     }
 }

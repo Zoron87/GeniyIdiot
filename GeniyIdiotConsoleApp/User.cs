@@ -61,7 +61,7 @@ namespace GeniyIdiotConsoleApp
 
         public void CalcDiagnose(User user)
         {
-            var diagnosesAndPercent = File.ReadAllText(diagnosesAndPercentPath).Split(Environment.NewLine).ToList();
+            var diagnosesAndPercent = FileSystem.GetInfoFromFile(diagnosesAndPercentPath).Split(Environment.NewLine).ToList();
 
             var result = diagnosesAndPercent.Select(x => x.Split(";")).LastOrDefault(x => int.Parse(x[0]) <= user.PercentCorrectAnswers);
 
