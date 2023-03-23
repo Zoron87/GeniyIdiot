@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 public class Question
 {
@@ -13,6 +14,6 @@ public class Question
 
     public override string ToString()
     {
-        return $"{Text};{Answer}{Environment.NewLine}";
+        return JsonConvert.SerializeObject(this);
     }
 }

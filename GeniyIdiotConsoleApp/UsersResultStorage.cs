@@ -3,7 +3,7 @@ using System.IO;
 using System;
 using System.Linq;
 using System.Timers;
-
+using Newtonsoft.Json;
 
 namespace GeniyIdiotConsoleApp
 {
@@ -13,17 +13,19 @@ namespace GeniyIdiotConsoleApp
 
         public static void SavesStatsInFile(string statOfGamesPath, User user)
         {
-            string currentGameStat = String.Join(';', new[] { user.Diagnose, user.PercentCorrectAnswers.ToString("0.00"), user.Name }) + Environment.NewLine;
+            string currentGameStat = JsonConvert.SerializeObject(user) + Environment.NewLine;
             FileSystem.SaveInfoInFile(statOfGamesPath, currentGameStat, true);
         }
 
-        public static IEnumerable<string> GetStatsFromFile(string statOfGamesPath, bool IsOrderByDescending)
+        public static IEnumerable<User> GetStatsFromFile(string statOfGamesPath, bool IsOrderByDescending)
         {
-            var statsFromFile = FileSystem.GetInfoFromFile(statOfGamesPath).Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
+            var statsFromFile = FileSystem.GetInfoFromFile(statOfGamesPath)
+                .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
            
-            if (!IsOrderByDescending) return statsFromFile;
+            if (!IsOrderByDescending) return statsFromFile.Select(s => JsonConvert.DeserializeObject<User>(s));
 
-            return statsFromFile.OrderByDescending(s => s, new StatsComparer()).Select(s => s);
+            return statsFromFile.Select(s => JsonConvert.DeserializeObject<User>(s)).OrderByDescending(s => s.PercentCorrectAnswers);
+            var test = statsFromFile.Select(s => JsonConvert.DeserializeObject<User>(s)).ToList();
         }
 
         private class StatsComparer : IComparer<string>

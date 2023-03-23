@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Linq;
 using System.Timers;
@@ -8,27 +9,24 @@ namespace GeniyIdiotConsoleApp
     public class User
     {
         private const string questionsAnswersPath = "QuestionsAnswers.txt";
-        private const string diagnosesAndPercentPath = "DiagnosesAndPercent.txt";
 
         static System.Timers.Timer gameTimer = new System.Timers.Timer(1000);
         static int timeoutForAnswerOnQuestion = 10;
         static string testQuestion;
 
-        private string name;
-        private string diagnose;
-        private float percentCorrectAnswers;
-
         public string Name { get; set; }
 
-        public float PercentCorrectAnswers { get; private set; }
+        public double PercentCorrectAnswers { get; set; }
 
-        public string Diagnose { get; private set; }
+        public string Diagnose { get; set; }
 
         public void GetPercentCorrectAnswers()
         {
             int countRightAnswers = 0;
 
-            var questionsAnswers = FileSystem.GetInfoFromFile(questionsAnswersPath).Split("\n", StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next()).ToList();
+            var questionsAnswers = FileSystem.GetInfoFromFile(questionsAnswersPath)
+                .Split("\n", StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next())
+                .Select(s=>JsonConvert.DeserializeObject<Question>(s)).ToList();
 
             gameTimer.AutoReset = true;
             gameTimer.Elapsed += Game.timer_Elapsed;
@@ -36,7 +34,7 @@ namespace GeniyIdiotConsoleApp
 
             foreach (var item in questionsAnswers)
             {
-                testQuestion = item.Split(";")[0];
+                testQuestion = item.Text;
 
                 Console.Clear();
                 Logs.OuputToConsole("=================================================");
@@ -46,7 +44,7 @@ namespace GeniyIdiotConsoleApp
                 Logs.OuputToConsole("=================================================");
 
                 int answer = GetAnswerOnQuestion();
-                if (int.Parse(item.Split(";")[1]) == answer) countRightAnswers++;
+                if (item.Answer == answer) countRightAnswers++;
             }
 
             gameTimer.Stop();
@@ -56,17 +54,7 @@ namespace GeniyIdiotConsoleApp
             if (percentRightAnswers >= 70) Game.BeepSounds.GoodDiagnose();
             else Game.BeepSounds.BadDiagnose();
 
-            PercentCorrectAnswers = percentRightAnswers;
-        }
-
-        public void CalcDiagnose(User user)
-        {
-            var diagnosesAndPercent = FileSystem.GetInfoFromFile(diagnosesAndPercentPath).Split(Environment.NewLine).ToList();
-
-            var result = diagnosesAndPercent.Select(x => x.Split(";")).LastOrDefault(x => int.Parse(x[0]) <= user.PercentCorrectAnswers);
-
-            if (result != null) user.Diagnose = result[1];
-            else user.Diagnose = diagnosesAndPercent[0].Split(";")[1];
+            PercentCorrectAnswers = Math.Round(percentRightAnswers, 2);
         }
 
         public int GetAnswerOnQuestion(int[] rangeAnswer = null)

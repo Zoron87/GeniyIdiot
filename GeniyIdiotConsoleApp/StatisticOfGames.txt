@@ -1,2 +1,2 @@
-Талант;90,00;Nick
-Дурак;66,67;Max
+{"Name":"dfsdfds","PercentCorrectAnswers":33.33,"Diagnose":"Идиот"}
+{"Name":"Max","PercentCorrectAnswers":36.67,"Diagnose":"Кретин"}

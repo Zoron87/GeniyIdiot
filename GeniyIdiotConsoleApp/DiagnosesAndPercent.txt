@@ -1,6 +1,6 @@
-﻿10;Кретин
-20;Идиот
-40;Дурак
-70;Нормальный
-85;Талант
-100;Гений
+﻿{"UserDiagnose":"Кретин","PercentCorrectAnswers":10}
+{"UserDiagnose":"Идиот","PercentCorrectAnswers":20}
+{"UserDiagnose":"Дурак","PercentCorrectAnswers":40}
+{"UserDiagnose":"Нормальный","PercentCorrectAnswers":70}
+{"UserDiagnose":"Талант","PercentCorrectAnswers":85}
+{"UserDiagnose":"Гений","PercentCorrectAnswers":100}

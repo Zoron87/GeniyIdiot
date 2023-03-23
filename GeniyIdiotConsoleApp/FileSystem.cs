@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace GeniyIdiotConsoleApp
@@ -11,9 +12,8 @@ namespace GeniyIdiotConsoleApp
     {
         public static void SaveInfoInFile(string filePath, string data, bool isAppend)
         {
-            if (isAppend) File.AppendAllText(filePath, data);
-            else File.WriteAllText(filePath, data);
-
+            if (isAppend) File.AppendAllText(filePath, data + Environment.NewLine);
+            else File.WriteAllText(filePath, data + Environment.NewLine);
         }
 
         public static string GetInfoFromFile(string filePath)

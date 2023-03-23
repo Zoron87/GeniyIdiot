@@ -11,8 +11,9 @@ namespace GeniyIdiotConsoleApp
         static void Main(string[] args)
         {
             var user = new User();
+            var diagnose = new Diagnose();
 
-            Game.InitializateStartMenu(user);
+            Game.InitializateStartMenu(user, diagnose);
 
             gameTimer.Close();
             gameTimer.Dispose();

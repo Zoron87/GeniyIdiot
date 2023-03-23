@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace GeniyIdiotConsoleApp
         static System.Timers.Timer gameTimer = new System.Timers.Timer(1000);
         static int timeoutForAnswerOnQuestion = 10;
 
-        public static void InitializateStartMenu(User user)
+        public static void InitializateStartMenu(User user, Diagnose diagnose)
         {
             Logs.OuputToConsole("Выберите подходящий пункт: \n 1. Пройти викторину \n 2. Добавить свой вопрос \n 3. Удалить вопрос из списка");
 
@@ -26,7 +27,7 @@ namespace GeniyIdiotConsoleApp
             switch (answerMenuOption)
             {
                 case 1:
-                    Game.StartTest(user);
+                    Game.StartTest(user,diagnose);
                     break;
                 case 2:
                     QuestionsStorage.AddQuestionFromConsole(user);
@@ -37,7 +38,7 @@ namespace GeniyIdiotConsoleApp
             }
         }
 
-        private static void StartTest(User user)
+        private static void StartTest(User user, Diagnose diagnose)
         {
             BeepSounds.StartGame();
 
@@ -50,7 +51,7 @@ namespace GeniyIdiotConsoleApp
             do
             {
                 user.GetPercentCorrectAnswers();
-                user.CalcDiagnose(user);
+                user.Diagnose = diagnose.CalcDiagnose(user);
 
                 Logs.OuputToConsole($"{user.Name}, Ваш диагноз - {user.Diagnose}");
                 UsersResultStorage.SavesStatsInFile(statOfGamesPath, user);
@@ -82,10 +83,9 @@ namespace GeniyIdiotConsoleApp
 
             foreach (var statOfOneGame in statsOfAllGamesByDesc)
             {
-                var statOfOneGameArr = statOfOneGame.Split(";");
-                Console.ForegroundColor = (UsersResultStorage.IsCurrentGameStatistic(statOfOneGameArr[2], statOfOneGameArr[1], user.Name, user.PercentCorrectAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
+                Console.ForegroundColor = (UsersResultStorage.IsCurrentGameStatistic(statOfOneGame.Name, statOfOneGame.PercentCorrectAnswers.ToString("0.00"), user.Name, user.PercentCorrectAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
 
-                string printGameStat = OutputFormatConsole(statOfOneGameArr[0], statOfOneGameArr[1], statOfOneGameArr[2]);
+                string printGameStat = OutputFormatConsole(statOfOneGame.Diagnose, statOfOneGame.PercentCorrectAnswers.ToString(), statOfOneGame.Name);
                 Logs.OuputToConsole(printGameStat);
             }
         }
@@ -94,8 +94,6 @@ namespace GeniyIdiotConsoleApp
         {
             return String.Format("{0,-10} {1, -9:0.00} {2, 10} ", param1, param2, param3);
         }
-
-       
 
         public static class BeepSounds
         {

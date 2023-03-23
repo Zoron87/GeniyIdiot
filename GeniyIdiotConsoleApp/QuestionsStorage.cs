@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System;
 using System.Linq;
-
+using Newtonsoft.Json;
 
 namespace GeniyIdiotConsoleApp
 {
@@ -30,7 +30,8 @@ namespace GeniyIdiotConsoleApp
         {
             do
             {
-                var questions = FileSystem.GetInfoFromFile(questionsAnswersPath).Split("\n", StringSplitOptions.RemoveEmptyEntries).ToList();
+                var questions = FileSystem.GetInfoFromFile(questionsAnswersPath)
+                    .Split("\n", StringSplitOptions.RemoveEmptyEntries).Select(s => JsonConvert.DeserializeObject<Question>(s)).ToList();
 
                 var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
 
@@ -40,7 +41,7 @@ namespace GeniyIdiotConsoleApp
                 questions.ForEach(s =>
                 {
                     index++;
-                    Logs.OuputToConsole($"{index}. {s}");
+                    Logs.OuputToConsole($"{index}. Вопрос: {s.Text}. Ответ: {s.Answer}");
                 });
 
                 Logs.OuputToConsole("Укажите номер вопроса, который необходимо удалить?");
@@ -49,7 +50,7 @@ namespace GeniyIdiotConsoleApp
 
                 questions.RemoveAt(answer - 1);
 
-                FileSystem.SaveInfoInFile(questionsAnswersPath, String.Join("\n", questions), false);
+                FileSystem.SaveInfoInFile(questionsAnswersPath, String.Join(Environment.NewLine, questions), false);
 
                 Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
             } while (user.GetAnswerFromUser());
