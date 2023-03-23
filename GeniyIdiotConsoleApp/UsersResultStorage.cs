@@ -11,21 +11,22 @@ namespace GeniyIdiotConsoleApp
     {
         public static string statOfGamesPath = "StatisticOfGames.txt";
 
-        public static void SavesStatsInFile(string statOfGamesPath, User user)
+        public static void SaveAll(User user)
         {
-            string currentGameStat = JsonConvert.SerializeObject(user) + Environment.NewLine;
-            FileSystem.SaveInfoInFile(statOfGamesPath, currentGameStat, true);
+            var allStats = GetAll(false).ToList();
+            allStats.Add(user);
+
+            string currentGameStat = JsonConvert.SerializeObject(allStats) + Environment.NewLine;
+            FileSystem.SaveInfo(statOfGamesPath, currentGameStat, false);
         }
 
-        public static IEnumerable<User> GetStatsFromFile(string statOfGamesPath, bool IsOrderByDescending)
+        public static IEnumerable<User> GetAll(bool IsOrderByDescending = true)
         {
-            var statsFromFile = FileSystem.GetInfoFromFile(statOfGamesPath)
-                .Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries);
-           
-            if (!IsOrderByDescending) return statsFromFile.Select(s => JsonConvert.DeserializeObject<User>(s));
+            var statsFromFile = JsonConvert.DeserializeObject<IEnumerable<User>>(FileSystem.GetInfo(statOfGamesPath));
 
-            return statsFromFile.Select(s => JsonConvert.DeserializeObject<User>(s)).OrderByDescending(s => s.PercentCorrectAnswers);
-            var test = statsFromFile.Select(s => JsonConvert.DeserializeObject<User>(s)).ToList();
+            if (!IsOrderByDescending) return statsFromFile;
+
+            return statsFromFile.OrderByDescending(s => s.PercentCorrectAnswers);
         }
 
         private class StatsComparer : IComparer<string>

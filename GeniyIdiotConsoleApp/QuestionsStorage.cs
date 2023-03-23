@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GeniyIdiotConsoleApp
 {
@@ -20,7 +21,7 @@ namespace GeniyIdiotConsoleApp
 
                 var newQuestion = new Question(questionForAdd, answerOnQuestionForAdd);
 
-                FileSystem.SaveInfoInFile(questionsAnswersPath, newQuestion.ToString(), true);
+                FileSystem.SaveInfo(questionsAnswersPath, newQuestion.ToString(), true);
 
                 Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
             } while (user.GetAnswerFromUser());
@@ -30,8 +31,7 @@ namespace GeniyIdiotConsoleApp
         {
             do
             {
-                var questions = FileSystem.GetInfoFromFile(questionsAnswersPath)
-                    .Split("\n", StringSplitOptions.RemoveEmptyEntries).Select(s => JsonConvert.DeserializeObject<Question>(s)).ToList();
+                var questions = GetAll().ToList();
 
                 var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
 
@@ -50,7 +50,7 @@ namespace GeniyIdiotConsoleApp
 
                 questions.RemoveAt(answer - 1);
 
-                FileSystem.SaveInfoInFile(questionsAnswersPath, String.Join(Environment.NewLine, questions), false);
+                SaveAll(questions);
 
                 Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
             } while (user.GetAnswerFromUser());
@@ -59,6 +59,17 @@ namespace GeniyIdiotConsoleApp
         private static int[] FillArrayFromRange(int startNumber, int count)
         {
             return Enumerable.Range(startNumber, count).ToArray();
+        }
+
+        public static IEnumerable<Question> GetAll()
+        {
+            return JsonConvert.DeserializeObject<IEnumerable<Question>>(FileSystem.GetInfo(questionsAnswersPath));
+        }
+
+        public static void SaveAll(IEnumerable<Question> questions)
+        {
+            var newQuestions = JsonConvert.SerializeObject(questions.ToList());
+            FileSystem.SaveInfo(questionsAnswersPath, newQuestions);
         }
     }
 }

@@ -24,9 +24,10 @@ namespace GeniyIdiotConsoleApp
         {
             int countRightAnswers = 0;
 
-            var questionsAnswers = FileSystem.GetInfoFromFile(questionsAnswersPath)
-                .Split("\n", StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next())
-                .Select(s=>JsonConvert.DeserializeObject<Question>(s)).ToList();
+            //var questionsAnswers = FileSystem.GetInfo(questionsAnswersPath)
+            //    .Split("\n", StringSplitOptions.RemoveEmptyEntries).OrderBy(r => new Random().Next())
+            //    .Select(s=>JsonConvert.DeserializeObject<Question>(s)).ToList();
+            var questionsAnswers = QuestionsStorage.GetAll().ToList();
 
             gameTimer.AutoReset = true;
             gameTimer.Elapsed += Game.timer_Elapsed;

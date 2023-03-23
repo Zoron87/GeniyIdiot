@@ -54,7 +54,7 @@ namespace GeniyIdiotConsoleApp
                 user.Diagnose = diagnose.CalcDiagnose(user);
 
                 Logs.OuputToConsole($"{user.Name}, Ваш диагноз - {user.Diagnose}");
-                UsersResultStorage.SavesStatsInFile(statOfGamesPath, user);
+                UsersResultStorage.SaveAll(user);
                 Logs.OuputToConsole("----------------------------------------------------");
 
                 Logs.OuputToConsole("Есть желание пройти викторину повторно? Да / Нет");
@@ -75,17 +75,17 @@ namespace GeniyIdiotConsoleApp
         public static void OutputStatsToConsole(User user)
         {
             Console.Clear();
-            var statsOfAllGamesByDesc = UsersResultStorage.GetStatsFromFile(statOfGamesPath, true);
+            var userStats = UsersResultStorage.GetAll();
 
             string printHeaderGameStat = OutputFormatConsole("Диагноз", "Результат", "ФИО");
             Logs.OuputToConsole(printHeaderGameStat);
             Logs.OuputToConsole();
 
-            foreach (var statOfOneGame in statsOfAllGamesByDesc)
+            foreach (var userStat in userStats)
             {
-                Console.ForegroundColor = (UsersResultStorage.IsCurrentGameStatistic(statOfOneGame.Name, statOfOneGame.PercentCorrectAnswers.ToString("0.00"), user.Name, user.PercentCorrectAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
+                Console.ForegroundColor = (UsersResultStorage.IsCurrentGameStatistic(userStat.Name, userStat.PercentCorrectAnswers.ToString("0.00"), user.Name, user.PercentCorrectAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
 
-                string printGameStat = OutputFormatConsole(statOfOneGame.Diagnose, statOfOneGame.PercentCorrectAnswers.ToString(), statOfOneGame.Name);
+                string printGameStat = OutputFormatConsole(userStat.Diagnose, userStat.PercentCorrectAnswers.ToString(), userStat.Name);
                 Logs.OuputToConsole(printGameStat);
             }
         }

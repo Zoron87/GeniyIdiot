@@ -10,13 +10,13 @@ namespace GeniyIdiotConsoleApp
 {
     public static class FileSystem
     {
-        public static void SaveInfoInFile(string filePath, string data, bool isAppend)
+        public static void SaveInfo(string filePath, string data, bool isAppend = false)
         {
             if (isAppend) File.AppendAllText(filePath, data + Environment.NewLine);
             else File.WriteAllText(filePath, data + Environment.NewLine);
         }
 
-        public static string GetInfoFromFile(string filePath)
+        public static string GetInfo(string filePath)
         {
             return File.ReadAllText(filePath);
         }
