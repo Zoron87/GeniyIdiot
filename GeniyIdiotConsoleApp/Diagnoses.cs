@@ -21,7 +21,7 @@ namespace GeniyIdiotConsoleApp
             var result = diagnosesAndPercent.LastOrDefault(x => x.PercentCorrectAnswers <= user.PercentCorrectAnswers);
 
             if (result != null) return result.UserDiagnose.ToString();
-            else return diagnosesAndPercent[0].UserDiagnose;
+            return diagnosesAndPercent[0].UserDiagnose;
         }
 
         private IEnumerable<Diagnose> GetAll()
