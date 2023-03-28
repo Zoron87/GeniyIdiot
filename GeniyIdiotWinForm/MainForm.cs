@@ -18,8 +18,6 @@ namespace GeniyIdiotWinForm
         public MainForm()
         {
             InitializeComponent();
-
-            _errorProvider1 = new ErrorProvider(this);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -65,9 +63,12 @@ namespace GeniyIdiotWinForm
 
                 UsersResultStorage.SaveAll(user);
 
-                MessageBox.Show(user.Name + ", Ваш диагноз - " + user.Diagnose);
+                if (MessageBox.Show($"{user.Name}, Ваш диагноз - {user.Diagnose} \r\n Желаете пройти викторину повторно?", "Ваш дианоз", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    Application.Restart();
+                }
+                else Close();
 
-                Close();
                 return;
             }
 
@@ -101,11 +102,6 @@ namespace GeniyIdiotWinForm
         {
             DeleteQuestion deleteQuestion = new DeleteQuestion();
             deleteQuestion.ShowDialog();
-        }
-
-        private void questionsTextLabel_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
