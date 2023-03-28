@@ -24,5 +24,10 @@ namespace GeniyIdiotWinFormsApp
             Form1.user.Name  = UserNameTextBox.Text;
             Close();
         }
+
+        private void InputUsername_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

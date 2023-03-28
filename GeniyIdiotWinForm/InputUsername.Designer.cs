@@ -70,6 +70,7 @@
             this.Controls.Add(this.label1);
             this.Name = "InputUsername";
             this.Text = "InputUsername";
+            this.Load += new System.EventHandler(this.InputUsername_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

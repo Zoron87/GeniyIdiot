@@ -82,6 +82,7 @@
             this.questionsTextLabel.TabIndex = 2;
             this.questionsTextLabel.Text = "Текст вопроса";
             this.questionsTextLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.questionsTextLabel.Click += new System.EventHandler(this.questionsTextLabel_Click);
             // 
             // mainMenu
             // 

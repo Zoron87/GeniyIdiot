@@ -100,5 +100,10 @@ namespace GeniyIdiotWinForm
             DeleteQuestion deleteQuestion = new DeleteQuestion();
             deleteQuestion.ShowDialog();
         }
+
+        private void questionsTextLabel_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
