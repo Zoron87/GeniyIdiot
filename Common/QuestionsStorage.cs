@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace GeniyIdiotConsoleApp
+namespace GeniyIdiot.Common
 {
     public static class QuestionsStorage
     {
@@ -63,7 +63,7 @@ namespace GeniyIdiotConsoleApp
 
         public static IEnumerable<Question> GetAll()
         {
-            return JsonConvert.DeserializeObject<IEnumerable<Question>>(FileSystem.GetInfo(questionsAnswersPath));
+            return JsonConvert.DeserializeObject<IEnumerable<Question>>(FileSystem.GetInfo(questionsAnswersPath)).OrderBy(s => new Random().Next());
         }
 
         public static void SaveAll(IEnumerable<Question> questions)

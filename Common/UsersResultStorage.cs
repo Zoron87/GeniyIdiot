@@ -5,7 +5,7 @@ using System.Linq;
 using System.Timers;
 using Newtonsoft.Json;
 
-namespace GeniyIdiotConsoleApp
+namespace GeniyIdiot.Common
 {
     public static class UsersResultStorage
     {

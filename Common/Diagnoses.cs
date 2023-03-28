@@ -5,16 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeniyIdiotConsoleApp
+namespace GeniyIdiot.Common
 {
     public class Diagnose
     {
         private const string diagnosesAndPercentPath = "DiagnosesAndPercent.txt";
 
-        public string UserDiagnose{ get; set; }
+        public string UserDiagnose { get; set; }
         public float PercentCorrectAnswers { get; set; }
 
-        public string CalcDiagnose(User user)
+        public string Calc(User user)
         {
             var diagnosesAndPercent = GetAll().ToList();
 

@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace GeniyIdiotConsoleApp
+namespace GeniyIdiot.Common
 {
     public static class Game
     {
@@ -27,7 +27,7 @@ namespace GeniyIdiotConsoleApp
             switch (answerMenuOption)
             {
                 case 1:
-                    Game.StartTest(user,diagnose);
+                    StartTest(user, diagnose);
                     break;
                 case 2:
                     QuestionsStorage.AddQuestionFromConsole(user);
@@ -51,7 +51,7 @@ namespace GeniyIdiotConsoleApp
             do
             {
                 user.GetPercentCorrectAnswers();
-                user.Diagnose = diagnose.CalcDiagnose(user);
+                user.Diagnose = diagnose.Calc(user);
 
                 Logs.OuputToConsole($"{user.Name}, Ваш диагноз - {user.Diagnose}");
                 UsersResultStorage.SaveAll(user);
@@ -66,7 +66,7 @@ namespace GeniyIdiotConsoleApp
 
             Logs.OuputToConsole("Вывести статистику игр? Да / Нет");
 
-            if (user.GetAnswerFromUser()) Game.OutputStatsToConsole(user);
+            if (user.GetAnswerFromUser()) OutputStatsToConsole(user);
 
             var returnFontColorToDefault = ConsoleColor.White;
             Console.ForegroundColor = returnFontColorToDefault;
@@ -83,16 +83,16 @@ namespace GeniyIdiotConsoleApp
 
             foreach (var userStat in userStats)
             {
-                Console.ForegroundColor = (UsersResultStorage.IsCurrentGameStatistic(userStat.Name, userStat.PercentCorrectAnswers.ToString("0.00"), user.Name, user.PercentCorrectAnswers.ToString("0.00"))) ? ConsoleColor.Green : ConsoleColor.White;
+                Console.ForegroundColor = UsersResultStorage.IsCurrentGameStatistic(userStat.Name, userStat.PercentCorrectAnswers.ToString("0.00"), user.Name, user.PercentCorrectAnswers.ToString("0.00")) ? ConsoleColor.Green : ConsoleColor.White;
 
                 string printGameStat = OutputFormatConsole(userStat.Diagnose, userStat.PercentCorrectAnswers.ToString(), userStat.Name);
                 Logs.OuputToConsole(printGameStat);
             }
         }
 
-        private static string OutputFormatConsole(string param1, string param2, string param3)
+        public static string OutputFormatConsole(string param1, string param2, string param3)
         {
-            return String.Format("{0,-10} {1, -9:0.00} {2, 10} ", param1, param2, param3);
+            return string.Format("{0,-10} {1, -9:0.00} {2, 10} ", param1, param2, param3);
         }
 
         public static class BeepSounds

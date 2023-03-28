@@ -11,15 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="DiagnosesAndPercent.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="QuestionsAnswers.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="StatisticOfGames.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <ProjectReference Include="..\Common\GeniyIdiot.Common.csproj" />
   </ItemGroup>
 
 </Project>

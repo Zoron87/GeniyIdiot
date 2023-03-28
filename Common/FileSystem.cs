@@ -6,7 +6,7 @@ using System.Text;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 
-namespace GeniyIdiotConsoleApp
+namespace GeniyIdiot.Common
 {
     public static class FileSystem
     {
