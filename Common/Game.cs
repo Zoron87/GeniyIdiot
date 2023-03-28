@@ -66,18 +66,18 @@ namespace GeniyIdiot.Common
 
             Logs.OuputToConsole("Вывести статистику игр? Да / Нет");
 
-            if (user.GetAnswerFromUser()) OutputStatsToConsole(user);
+            if (user.GetAnswerFromUser()) OutputStats(user);
 
             var returnFontColorToDefault = ConsoleColor.White;
             Console.ForegroundColor = returnFontColorToDefault;
         }
 
-        public static void OutputStatsToConsole(User user)
+        public static void OutputStats(User user)
         {
             Console.Clear();
             var userStats = UsersResultStorage.GetAll();
 
-            string printHeaderGameStat = OutputFormatConsole("Диагноз", "Результат", "ФИО");
+            string printHeaderGameStat = OutputViewFormat("Диагноз", "Результат", "ФИО");
             Logs.OuputToConsole(printHeaderGameStat);
             Logs.OuputToConsole();
 
@@ -85,12 +85,12 @@ namespace GeniyIdiot.Common
             {
                 Console.ForegroundColor = UsersResultStorage.IsCurrentGameStatistic(userStat.Name, userStat.PercentCorrectAnswers.ToString("0.00"), user.Name, user.PercentCorrectAnswers.ToString("0.00")) ? ConsoleColor.Green : ConsoleColor.White;
 
-                string printGameStat = OutputFormatConsole(userStat.Diagnose, userStat.PercentCorrectAnswers.ToString(), userStat.Name);
+                string printGameStat = OutputViewFormat(userStat.Diagnose, userStat.PercentCorrectAnswers.ToString(), userStat.Name);
                 Logs.OuputToConsole(printGameStat);
             }
         }
 
-        public static string OutputFormatConsole(string param1, string param2, string param3)
+        public static string OutputViewFormat(string param1, string param2, string param3)
         {
             return string.Format("{0,-10} {1, -9:0.00} {2, 10} ", param1, param2, param3);
         }

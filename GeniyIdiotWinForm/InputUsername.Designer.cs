@@ -79,7 +79,7 @@
         #endregion
 
         private Label label1;
-        private TextBox UserNameTextBox;
+        public TextBox UserNameTextBox;
         private Button SaveUsernameButton;
     }
 }

@@ -21,7 +21,6 @@ namespace GeniyIdiotWinFormsApp
 
         private void SaveUsernameButton_Click(object sender, EventArgs e)
         {
-            Form1.user.Name  = UserNameTextBox.Text;
             Close();
         }
 

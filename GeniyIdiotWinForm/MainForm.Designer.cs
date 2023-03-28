@@ -1,6 +1,6 @@
 ﻿namespace GeniyIdiotWinForm
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -186,7 +186,7 @@
             this.userAnswerNumericUpDown.Size = new System.Drawing.Size(191, 23);
             this.userAnswerNumericUpDown.TabIndex = 8;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -199,8 +199,8 @@
             this.Controls.Add(this.questionNumberLabel);
             this.Controls.Add(this.nextButton);
             this.Controls.Add(this.mainMenu);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "MainForm";
+            this.Text = "MainForm";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();

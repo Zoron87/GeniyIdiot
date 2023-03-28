@@ -3,11 +3,11 @@ using GeniyIdiotWinFormsApp;
 
 namespace GeniyIdiotWinForm
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         private List<Question> questions;
         private Question currentQuestion;
-        public static User user;
+        public User user;
         private Diagnose diagnose;
         private int countRightAnswers;
         private int questionsCounter = -1;
@@ -15,7 +15,7 @@ namespace GeniyIdiotWinForm
 
         private readonly ErrorProvider _errorProvider1;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
 
@@ -31,6 +31,8 @@ namespace GeniyIdiotWinForm
 
             InputUsername inputUsername = new InputUsername();
             inputUsername.ShowDialog();
+
+            user.Name = inputUsername.UserNameTextBox.Text;
 
             ShowNextQuestion();
         }
