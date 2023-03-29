@@ -23,10 +23,5 @@ namespace GeniyIdiotWinFormsApp
         {
             Close();
         }
-
-        private void InputUsername_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

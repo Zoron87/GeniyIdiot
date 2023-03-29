@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace GeniyIdiot.Common
 {
@@ -59,6 +60,15 @@ namespace GeniyIdiot.Common
         private static int[] FillArrayFromRange(int startNumber, int count)
         {
             return Enumerable.Range(startNumber, count).ToArray();
+        }
+
+        public static void AddQuestionFromWinForms(Question question)
+        {
+            var questions = QuestionsStorage.GetAll().ToList();
+
+            questions.Add(question);
+
+            QuestionsStorage.SaveAll(questions);
         }
 
         public static IEnumerable<Question> GetAll()

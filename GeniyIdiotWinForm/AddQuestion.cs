@@ -21,14 +21,10 @@ namespace GeniyIdiotWinFormsApp
 
         private void addQuestionButton_Click(object sender, EventArgs e)
         {
-            var questions = QuestionsStorage.GetAll().ToList();
-
             var questionText = questionTextBox.Text;
             var answerText = int.Parse(answerNumericUpDown.Text);
 
-            questions.Add(new Question(questionText, answerText));
-
-            QuestionsStorage.SaveAll(questions);
+            QuestionsStorage.AddQuestionFromWinForms(new Question(questionText, answerText));
 
             MessageBox.Show("Ваш вопрос успешно добавлен!");
 
