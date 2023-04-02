@@ -42,8 +42,7 @@ namespace GeniyIdiotWinFormsApp
                 {
                     questionGridView.Rows.RemoveAt(row);
 
-                    questions.RemoveAt(row);
-                    QuestionsStorage.SaveAll(questions);
+                    QuestionsStorage.DeleteQuestion(questions[row]);
 
                     MessageBox.Show("Выбранный вопрос успешно удален!");
                 }

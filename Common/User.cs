@@ -18,10 +18,6 @@ namespace GeniyIdiot.Common
 
         public double PercentCorrectAnswers { get; set; }
 
-        public string Diagnose { get; set; }
-
-
-
-        
+        public string Diagnose { get; set; } 
     }
 }

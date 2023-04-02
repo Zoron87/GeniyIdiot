@@ -72,9 +72,12 @@ namespace GeniyIdiotConsoleApp
 
                         int answer = GetAnswerOnQuestion(allowedNumbersForDeleteQuestion);
 
-                        questions.RemoveAt(answer - 1);
+                        var questionForDelete = questions[answer - 1];
 
-                        QuestionsStorage.SaveAll(questions);
+                        QuestionsStorage.DeleteQuestion(questionForDelete);
+                        //questions.RemoveAt(answer - 1);
+
+                        //QuestionsStorage.SaveAll(questions);
 
                         Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
                     } while (GetAnswerFromUser());
