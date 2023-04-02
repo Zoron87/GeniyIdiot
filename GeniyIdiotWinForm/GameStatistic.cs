@@ -24,7 +24,6 @@ namespace GeniyIdiotWinFormsApp
 
             foreach (var stat in gameStatistic)
             {
-                var formatResult = Game.OutputViewFormat(stat.Diagnose, stat.PercentCorrectAnswers.ToString("0.00"), stat.Name);
                 dataGridView1.Rows.Add(stat.Diagnose, stat.PercentCorrectAnswers.ToString(), stat.Name);
             }
         }

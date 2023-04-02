@@ -5,15 +5,8 @@ namespace GeniyIdiotWinForm
 {
     public partial class MainForm : Form
     {
-        private List<Question> questions;
-        private Question currentQuestion;
-        public User user;
-        private Diagnose diagnose;
-        private int countRightAnswers;
-        private int questionsCounter = -1;
-        private decimal userAnswer = -1;
-
-        private readonly ErrorProvider _errorProvider1;
+        Game game;
+        User user;
 
         public MainForm()
         {
@@ -22,57 +15,42 @@ namespace GeniyIdiotWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
             user = new User();
-            diagnose = new Diagnose();
-            questions = QuestionsStorage.GetAll().ToList();
+            game = new Game(user);     
 
             InputUsername inputUsername = new InputUsername();
             inputUsername.ShowDialog();
 
             user.Name = inputUsername.UserNameTextBox.Text;
 
-            ShowNextQuestion();
-        }
-
-        private void ShowNextQuestion()
-        {
             userAnswerNumericUpDown.Value = 0;
-            questionsCounter++;
-            questionsTextLabel.Text = questions[questionsCounter].Text;
-
-            questionNumberLabel.Text = "Вопрос №" + Convert.ToInt32(questionsCounter + 1);
+            questionsTextLabel.Text = game.GetNextQuestion().Text;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            userAnswer = userAnswerNumericUpDown.Value;
+            var userAnswer = userAnswerNumericUpDown.Value;
 
-            if (userAnswer == questions[questionsCounter].Answer)
+            game.AcceptAnswer(userAnswer);
+
+            if (game.End())
             {
-                countRightAnswers++;
-            }
+                user.PercentCorrectAnswers = game.CalculatePercentCorrectAnswers();
+                var message = game.CalculateDiagnose(user);
 
-            var endGame = questionsCounter == questions.Count-1;
-
-            if (endGame)
-            {
-                user.PercentCorrectAnswers = (double)countRightAnswers / questions.Count * 100;
-
-                user.Diagnose = diagnose.Calc(user);
-
-                UsersResultStorage.SaveAll(user);
-
-                if (MessageBox.Show($"{user.Name}, Ваш диагноз - {user.Diagnose} \r\n Желаете пройти викторину повторно?", "Ваш дианоз", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                if (MessageBox.Show(message + "\r\n Желаете пройти викторину повторно ?", "Ваш диагноз", MessageBoxButtons.OKCancel) == DialogResult.OK)
                 {
                     Application.Restart();
-                }
+                } 
                 else Close();
 
                 return;
             }
-
-            ShowNextQuestion();
+            else
+            {
+                questionsTextLabel.Text = game.GetNextQuestion().Text;
+                userAnswerNumericUpDown.Value = 0;
+            }
         }
 
         private void результатыToolStripMenuItem_Click(object sender, EventArgs e)
