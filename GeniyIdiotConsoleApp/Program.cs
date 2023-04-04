@@ -38,52 +38,59 @@ namespace GeniyIdiotConsoleApp
                     StartTest(game, user, diagnose);
                     break;
                 case 2:
-                    do
-                    {
-                        Logs.OuputToConsole("Введите свой вопрос:");
-                        string textQuestionForAdd = Console.ReadLine();
-                        Logs.OuputToConsole("Введите ответ на него:");
-                        int answerQuestionForAdd = CheckIntRangeAnswerUser();
+                    AddQuestionFromConsole();
 
-                        QuestionsStorage.AddQuestion(new Question(textQuestionForAdd, answerQuestionForAdd));
-
-                        Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
-                    } while (GetAnswerFromUser());
-
-                  break;
+                    break;
                 case 3:
 
-                    do
-                    {
-                        var questions = QuestionsStorage.GetAll().ToList();
+                    DeleteQuestionFromConsole();
 
-                        var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
-
-                        Logs.OuputToConsole("Выводим список имеющихся вопросов:");
-
-                        int index = 0;
-                        questions.ForEach(s =>
-                        {
-                            index++;
-                            Logs.OuputToConsole($"{index}. Вопрос: {s.Text}. Ответ: {s.Answer}");
-                        });
-
-                        Logs.OuputToConsole("Укажите номер вопроса, который необходимо удалить?");
-
-                        int answer = GetAnswerOnQuestion(allowedNumbersForDeleteQuestion);
-
-                        var questionForDelete = questions[answer - 1];
-
-                        QuestionsStorage.DeleteQuestion(questionForDelete);
-                        //questions.RemoveAt(answer - 1);
-
-                        //QuestionsStorage.SaveAll(questions);
-
-                        Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
-                    } while (GetAnswerFromUser());
-                    
                     break;
             }
+        }
+
+        private static void DeleteQuestionFromConsole()
+        {
+            do
+            {
+                var questions = QuestionsStorage.GetAll().ToList();
+
+                var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
+
+                Logs.OuputToConsole("Выводим список имеющихся вопросов:");
+
+                int index = 0;
+                questions.ForEach(s =>
+                {
+                    index++;
+                    Logs.OuputToConsole($"{index}. Вопрос: {s.Text}. Ответ: {s.Answer}");
+                });
+
+                Logs.OuputToConsole("Укажите номер вопроса, который необходимо удалить?");
+
+                int answer = GetAnswerOnQuestion(allowedNumbersForDeleteQuestion);
+
+                var questionForDelete = questions[answer - 1];
+
+                QuestionsStorage.DeleteQuestion(questionForDelete);
+
+                Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
+            } while (GetAnswerFromUser());
+        }
+
+        private static void AddQuestionFromConsole()
+        {
+            do
+            {
+                Logs.OuputToConsole("Введите свой вопрос:");
+                string textQuestionForAdd = Console.ReadLine();
+                Logs.OuputToConsole("Введите ответ на него:");
+                int answerQuestionForAdd = CheckIntRangeAnswerUser();
+
+                QuestionsStorage.AddQuestion(new Question(textQuestionForAdd, answerQuestionForAdd));
+
+                Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
+            } while (GetAnswerFromUser());
         }
 
         private static void StartTest(Game game, User user, Diagnose diagnose)
