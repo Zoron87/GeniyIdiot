@@ -11,7 +11,7 @@ namespace GeniyIdiot.Common
     {
         private const string questionsAnswersPath = "QuestionsAnswers.txt";
 
-        public void AddQuestion(Question question)
+        public void Add(Question question)
         {
             var questions = GetAll().ToList();
 
@@ -20,28 +20,22 @@ namespace GeniyIdiot.Common
             SaveAll(questions);
         }
 
-        public void DeleteQuestion(Question questionForDelete)
+        public void Delete(Question questionForDelete)
         {
             var questions = GetAll().ToList();
 
-            for (int i = 0; i < questions.Count; i++)
-            {
-                if (questions[i].Text == questionForDelete.Text)
-                {
-                    questions.RemoveAt(i);
-                    break;
-                }
-            }
+            var questionForRemove = questions.Where(q => q.Text == questionForDelete.Text).FirstOrDefault();
+            questions.Remove(questionForRemove);
 
             SaveAll(questions);
         }
 
-        public IEnumerable<Question> GetAll()
+        public List<Question> GetAll()
         {
-            return JsonConvert.DeserializeObject<IEnumerable<Question>>(FileSystem.GetInfo(questionsAnswersPath)).OrderBy(s => new Random().Next());
+            return JsonConvert.DeserializeObject<IEnumerable<Question>>(FileSystem.GetInfo(questionsAnswersPath)).OrderBy(s => new Random().Next()).ToList();
         }
 
-        public void SaveAll(IEnumerable<Question> questions)
+        private void SaveAll(List<Question> questions)
         {
             var newQuestions = JsonConvert.SerializeObject(questions.ToList());
             FileSystem.SaveInfo(questionsAnswersPath, newQuestions);

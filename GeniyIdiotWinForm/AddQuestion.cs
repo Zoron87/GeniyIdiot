@@ -27,7 +27,7 @@ namespace GeniyIdiotWinFormsApp
             var questionText = questionTextBox.Text;
             var answerText = int.Parse(answerNumericUpDown.Text);
 
-            questionsStorageMethod.AddQuestion(new Question(questionText, answerText));
+            questionsStorageMethod.Add(new Question(questionText, answerText));
 
             MessageBox.Show("Ваш вопрос успешно добавлен!");
 

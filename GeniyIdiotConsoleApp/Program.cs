@@ -56,7 +56,7 @@ namespace GeniyIdiotConsoleApp
         {
             do
             {
-                var questions = questionStorageMethod.GetAll().ToList();
+                var questions = questionStorageMethod.GetAll();
 
                 var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
 
@@ -75,7 +75,7 @@ namespace GeniyIdiotConsoleApp
 
                 var questionForDelete = questions[answer - 1];
 
-                questionStorageMethod.DeleteQuestion(questionForDelete);
+                questionStorageMethod.Delete(questionForDelete);
 
                 Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
             } while (GetAnswerFromUser());
@@ -90,7 +90,7 @@ namespace GeniyIdiotConsoleApp
                 Logs.OuputToConsole("Введите ответ на него:");
                 int answerQuestionForAdd = CheckIntRangeAnswerUser();
 
-                questionStorageMethod.AddQuestion(new Question(textQuestionForAdd, answerQuestionForAdd));
+                questionStorageMethod.Add(new Question(textQuestionForAdd, answerQuestionForAdd));
 
                 Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
             } while (GetAnswerFromUser());

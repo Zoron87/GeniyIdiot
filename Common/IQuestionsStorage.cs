@@ -8,10 +8,9 @@ namespace GeniyIdiot.Common
 {
     public interface IQuestionsStorage
     {
-        public void AddQuestion(Question question);
-        public void DeleteQuestion(Question questionForDelete);
+        public void Add(Question question);
+        public void Delete(Question questionForDelete);
 
-        public IEnumerable<Question> GetAll();
-        public void SaveAll(IEnumerable<Question> questions);
+        public List<Question> GetAll();
     }
 }

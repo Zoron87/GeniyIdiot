@@ -19,13 +19,13 @@ namespace GeniyIdiot.Common
         private int countRightAnswers;
         private int questionsCounter = -1;
         private decimal userAnswer = -1;
-        IQuestionsStorage questionStorageMethod;
+        IQuestionsStorage questionStorage;
 
-        public Game(User user, IQuestionsStorage questionStorageMethod)
+        public Game(User user, IQuestionsStorage questionStorage)
         {
             this.user = user;
-            this.questionStorageMethod = questionStorageMethod;
-            questions = questionStorageMethod.GetAll().ToList();
+            this.questionStorage = questionStorage;
+            questions = questionStorage.GetAll();
         }
 
         public Question GetNextQuestion()

@@ -8,22 +8,17 @@ namespace GeniyIdiot.Common
 {
     internal class QuestionsStorageInDB : IQuestionsStorage
     {
-        public void AddQuestion(Question question)
+        public void Add(Question question)
         {
             throw new NotImplementedException();
         }
 
-        public void DeleteQuestion(Question questionForDelete)
+        public void Delete(Question questionForDelete)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Question> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveAll(IEnumerable<Question> questions)
+        public List<Question> GetAll()
         {
             throw new NotImplementedException();
         }

@@ -11,7 +11,7 @@
 //    {
 //        private const string questionsAnswersPath = "QuestionsAnswers.txt";
 
-//        public static void AddQuestion(Question question)
+//        public static void Add(Question question)
 //        {
 //            var questions = QuestionsStorage.GetAll().ToList();
 
@@ -20,7 +20,7 @@
 //            QuestionsStorage.SaveAll(questions);
 //        }
 
-//        public static void DeleteQuestion(Question questionForDelete)
+//        public static void Delete(Question questionForDelete)
 //        {
 //            var questions = QuestionsStorage.GetAll().ToList();
 
