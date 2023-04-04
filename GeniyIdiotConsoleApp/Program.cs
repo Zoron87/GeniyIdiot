@@ -17,17 +17,18 @@ namespace GeniyIdiotConsoleApp
         {
              User user = new User();
              Diagnose diagnose = new Diagnose();
-             Game game = new Game(user);
 
-             IQuestionsStorage questionStorageMethod = new QuestionsStorageInJson();
+             IQuestionsStorage questionsStorageMethod = new QuestionsStorageInJson();
 
-            InitializateStartMenu(game, user, diagnose, questionStorageMethod);
+             Game game = new Game(user, questionsStorageMethod);
+
+            InitializateStartMenu(game, user, diagnose, questionsStorageMethod);
 
             gameTimer.Close();
             gameTimer.Dispose();
         }
 
-        public static void InitializateStartMenu(Game game, User user, Diagnose diagnose, IQuestionsStorage questionStorageMethod)
+        public static void InitializateStartMenu(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorageMethod)
         {
             Logs.OuputToConsole("Выберите подходящий пункт: \n 1. Пройти викторину \n 2. Добавить свой вопрос \n 3. Удалить вопрос из списка");
 
@@ -37,55 +38,65 @@ namespace GeniyIdiotConsoleApp
             switch (answerMenuOption)
             {
                 case 1:
-                    StartTest(game, user, diagnose);
+                    StartTest(game, user, diagnose, questionsStorageMethod);
                     break;
                 case 2:
-                    do
-                    {
-                        Logs.OuputToConsole("Введите свой вопрос:");
-                        string textQuestionForAdd = Console.ReadLine();
-                        Logs.OuputToConsole("Введите ответ на него:");
-                        int answerQuestionForAdd = CheckIntRangeAnswerUser();
+                    AddQuestionFromConsole(questionsStorageMethod);
 
-                        questionStorageMethod.AddQuestion(new Question(textQuestionForAdd, answerQuestionForAdd));
-
-                        Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
-                    } while (GetAnswerFromUser());
-
-                  break;
+                    break;
                 case 3:
 
-                    do
-                    {
-                        var questions = questionStorageMethod.GetAll().ToList();
+                    DeleteQuestionFromConsole(questionsStorageMethod);
 
-                        var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
-
-                        Logs.OuputToConsole("Выводим список имеющихся вопросов:");
-
-                        int index = 0;
-                        questions.ForEach(s =>
-                        {
-                            index++;
-                            Logs.OuputToConsole($"{index}. Вопрос: {s.Text}. Ответ: {s.Answer}");
-                        });
-
-                        Logs.OuputToConsole("Укажите номер вопроса, который необходимо удалить?");
-
-                        int answer = GetAnswerOnQuestion(allowedNumbersForDeleteQuestion);
-
-                        var questionForDelete = questions[answer - 1];
-
-                        questionStorageMethod.DeleteQuestion(questionForDelete);
-
-                        Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
-                    } while (GetAnswerFromUser());
-                    
                     break;
             }
         }
 
-        private static void StartTest(Game game, User user, Diagnose diagnose)
+        private static void DeleteQuestionFromConsole(IQuestionsStorage questionStorageMethod)
+        {
+            do
+            {
+                var questions = questionStorageMethod.GetAll().ToList();
+
+                var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
+
+                Logs.OuputToConsole("Выводим список имеющихся вопросов:");
+
+                int index = 0;
+                questions.ForEach(s =>
+                {
+                    index++;
+                    Logs.OuputToConsole($"{index}. Вопрос: {s.Text}. Ответ: {s.Answer}");
+                });
+
+                Logs.OuputToConsole("Укажите номер вопроса, который необходимо удалить?");
+
+                int answer = GetAnswerOnQuestion(allowedNumbersForDeleteQuestion);
+
+                var questionForDelete = questions[answer - 1];
+
+                questionStorageMethod.DeleteQuestion(questionForDelete);
+
+                Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
+            } while (GetAnswerFromUser());
+        }
+
+        private static void AddQuestionFromConsole(IQuestionsStorage questionStorageMethod)
+        {
+            do
+            {
+                Logs.OuputToConsole("Введите свой вопрос:");
+                string textQuestionForAdd = Console.ReadLine();
+                Logs.OuputToConsole("Введите ответ на него:");
+                int answerQuestionForAdd = CheckIntRangeAnswerUser();
+
+                questionStorageMethod.AddQuestion(new Question(textQuestionForAdd, answerQuestionForAdd));
+
+                Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
+            } while (GetAnswerFromUser());
+        }
+
+        private static void StartTest(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorageMethod)
         {
             BeepSounds.StartGame();
 
@@ -97,7 +108,7 @@ namespace GeniyIdiotConsoleApp
             float percentRightAnswers;
             do
             {
-                GetQuestions(user);
+                GetQuestions(user, questionsStorageMethod);
                 var messageDiagnose = game.CalculateDiagnose(user);
 
                 Logs.OuputToConsole(messageDiagnose);
@@ -172,9 +183,9 @@ namespace GeniyIdiotConsoleApp
             return Enumerable.Range(startNumber, count).ToArray();
         }
 
-        public static void GetQuestions(User user)
+        public static void GetQuestions(User user, IQuestionsStorage questionsStorageMethod)
         {
-            var game = new Game(user);
+            var game = new Game(user, questionsStorageMethod);
             int countRightAnswers = 0;
 
             var questionsAnswers = game.GetAllQuestions();

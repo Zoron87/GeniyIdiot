@@ -18,7 +18,7 @@ namespace GeniyIdiotWinForm
         private void Form1_Load(object sender, EventArgs e)
         {
             user = new User();
-            game = new Game(user);
+            game = new Game(user, questionsStorageMethod);
 
             InputUsername inputUsername = new InputUsername();
             inputUsername.ShowDialog();

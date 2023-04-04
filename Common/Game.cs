@@ -19,11 +19,12 @@ namespace GeniyIdiot.Common
         private int countRightAnswers;
         private int questionsCounter = -1;
         private decimal userAnswer = -1;
+        IQuestionsStorage questionStorageMethod;
 
-        public Game(User user)
+        public Game(User user, IQuestionsStorage questionStorageMethod)
         {
             this.user = user;
-            IQuestionsStorage questionStorageMethod = new QuestionsStorageInJson();
+            this.questionStorageMethod = questionStorageMethod;
             questions = questionStorageMethod.GetAll().ToList();
         }
 
