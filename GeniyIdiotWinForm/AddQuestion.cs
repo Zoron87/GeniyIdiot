@@ -1,4 +1,5 @@
 ﻿using GeniyIdiot.Common;
+using GeniyIdiotWinForm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,9 +15,11 @@ namespace GeniyIdiotWinFormsApp
 
     public partial class AddQuestion : Form
     {
-        public AddQuestion()
+        IQuestionsStorage questionsStorageMethod;
+        public AddQuestion(IQuestionsStorage questionsStorageMethod)
         {
             InitializeComponent();
+            this.questionsStorageMethod = questionsStorageMethod;
         }
 
         private void addQuestionButton_Click(object sender, EventArgs e)
@@ -24,7 +27,7 @@ namespace GeniyIdiotWinFormsApp
             var questionText = questionTextBox.Text;
             var answerText = int.Parse(answerNumericUpDown.Text);
 
-            QuestionsStorage.AddQuestion(new Question(questionText, answerText));
+            questionsStorageMethod.AddQuestion(new Question(questionText, answerText));
 
             MessageBox.Show("Ваш вопрос успешно добавлен!");
 

@@ -23,7 +23,8 @@ namespace GeniyIdiot.Common
         public Game(User user)
         {
             this.user = user;
-            questions = QuestionsStorage.GetAll().ToList();
+            IQuestionsStorage questionStorageMethod = new QuestionsStorageInJson();
+            questions = questionStorageMethod.GetAll().ToList();
         }
 
         public Question GetNextQuestion()
@@ -32,6 +33,11 @@ namespace GeniyIdiot.Common
             currentQuestion = questions[questionsCounter];
 
             return currentQuestion;
+        }
+
+        public IEnumerable<Question> GetAllQuestions()
+        {
+            return questions;
         }
 
         public void AcceptAnswer(decimal userAnswer)

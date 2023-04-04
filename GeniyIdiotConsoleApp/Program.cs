@@ -12,20 +12,22 @@ namespace GeniyIdiotConsoleApp
        
         static System.Timers.Timer gameTimer = new System.Timers.Timer(1000);
         static int timeoutForAnswerOnQuestion = 10;
-       
+
         static void Main(string[] args)
         {
              User user = new User();
              Diagnose diagnose = new Diagnose();
              Game game = new Game(user);
 
-            InitializateStartMenu(game, user, diagnose);
+             IQuestionsStorage questionStorageMethod = new QuestionsStorageInJson();
+
+            InitializateStartMenu(game, user, diagnose, questionStorageMethod);
 
             gameTimer.Close();
             gameTimer.Dispose();
         }
 
-        public static void InitializateStartMenu(Game game, User user, Diagnose diagnose)
+        public static void InitializateStartMenu(Game game, User user, Diagnose diagnose, IQuestionsStorage questionStorageMethod)
         {
             Logs.OuputToConsole("Выберите подходящий пункт: \n 1. Пройти викторину \n 2. Добавить свой вопрос \n 3. Удалить вопрос из списка");
 
@@ -45,7 +47,7 @@ namespace GeniyIdiotConsoleApp
                         Logs.OuputToConsole("Введите ответ на него:");
                         int answerQuestionForAdd = CheckIntRangeAnswerUser();
 
-                        QuestionsStorage.AddQuestion(new Question(textQuestionForAdd, answerQuestionForAdd));
+                        questionStorageMethod.AddQuestion(new Question(textQuestionForAdd, answerQuestionForAdd));
 
                         Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
                     } while (GetAnswerFromUser());
@@ -55,7 +57,7 @@ namespace GeniyIdiotConsoleApp
 
                     do
                     {
-                        var questions = QuestionsStorage.GetAll().ToList();
+                        var questions = questionStorageMethod.GetAll().ToList();
 
                         var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
 
@@ -74,10 +76,7 @@ namespace GeniyIdiotConsoleApp
 
                         var questionForDelete = questions[answer - 1];
 
-                        QuestionsStorage.DeleteQuestion(questionForDelete);
-                        //questions.RemoveAt(answer - 1);
-
-                        //QuestionsStorage.SaveAll(questions);
+                        questionStorageMethod.DeleteQuestion(questionForDelete);
 
                         Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
                     } while (GetAnswerFromUser());
@@ -178,7 +177,7 @@ namespace GeniyIdiotConsoleApp
             var game = new Game(user);
             int countRightAnswers = 0;
 
-            var questionsAnswers = QuestionsStorage.GetAll().ToList();
+            var questionsAnswers = game.GetAllQuestions();
 
             gameTimer.AutoReset = true;
             gameTimer.Elapsed += timer_Elapsed;

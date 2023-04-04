@@ -14,10 +14,12 @@ namespace GeniyIdiotWinFormsApp
     public partial class DeleteQuestion : Form
     {
         private List<Question> questions;
+        IQuestionsStorage questionsStorageMethod;
 
-        public DeleteQuestion()
+        public DeleteQuestion(IQuestionsStorage questionsStorageMethod)
         {
             InitializeComponent();
+            this.questionsStorageMethod = questionsStorageMethod;
         }
 
         private void DeleteQuestion_Load(object sender, EventArgs e)
@@ -25,7 +27,7 @@ namespace GeniyIdiotWinFormsApp
             questionGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             questionGridView.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
-            questions = QuestionsStorage.GetAll().ToList();
+            questions = questionsStorageMethod.GetAll().ToList();
             foreach (var question in questions)
             {
                 questionGridView.Rows.Add(question.Text, question.Answer);
@@ -42,7 +44,7 @@ namespace GeniyIdiotWinFormsApp
                 {
                     questionGridView.Rows.RemoveAt(row);
 
-                    QuestionsStorage.DeleteQuestion(questions[row]);
+                    questionsStorageMethod.DeleteQuestion(questions[row]);
 
                     MessageBox.Show("Выбранный вопрос успешно удален!");
                 }
