@@ -24,8 +24,8 @@ namespace GeniyIdiot.Common
         {
             var questions = GetAll().ToList();
 
-            var questionForRemove = questions.Where(q => q.Text == questionForDelete.Text).FirstOrDefault();
-    
+            var questionForRemove = questions.FirstOrDefault(q => q.Text == questionForDelete.Text);
+
             if (questionForRemove != null)
                 questions.Remove(questionForRemove);
 
