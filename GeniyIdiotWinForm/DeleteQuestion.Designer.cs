@@ -75,15 +75,15 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // DeleteQuestion
+            // Delete
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(426, 450);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.questionGridView);
-            this.Name = "DeleteQuestion";
-            this.Text = "DeleteQuestion";
+            this.Name = "Delete";
+            this.Text = "Delete";
             this.Load += new System.EventHandler(this.DeleteQuestion_Load);
             ((System.ComponentModel.ISupportInitialize)(this.questionGridView)).EndInit();
             this.ResumeLayout(false);
