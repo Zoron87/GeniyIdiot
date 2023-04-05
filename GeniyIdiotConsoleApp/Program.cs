@@ -15,20 +15,21 @@ namespace GeniyIdiotConsoleApp
 
         static void Main(string[] args)
         {
-             User user = new User();
-             Diagnose diagnose = new Diagnose();
+            User user = new User();
+            Diagnose diagnose = new Diagnose();
 
-             IQuestionsStorage questionsStorageMethod = new QuestionsStorageInJson();
+            IQuestionsStorage questionsStorage = new QuestionsStorageInJson();
+            IUserResultsStorage userResults = new UserResultsStorageInJson();
 
-             Game game = new Game(user, questionsStorageMethod);
+            Game game = new Game(user, questionsStorage);
 
-            InitializateStartMenu(game, user, diagnose, questionsStorageMethod);
+            InitializateStartMenu(game, user, diagnose, questionsStorage, userResults);
 
             gameTimer.Close();
             gameTimer.Dispose();
         }
 
-        public static void InitializateStartMenu(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorageMethod)
+        public static void InitializateStartMenu(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorage, IUserResultsStorage userResults)
         {
             Logs.OuputToConsole("Выберите подходящий пункт: \n 1. Пройти викторину \n 2. Добавить свой вопрос \n 3. Удалить вопрос из списка");
 
@@ -38,25 +39,25 @@ namespace GeniyIdiotConsoleApp
             switch (answerMenuOption)
             {
                 case 1:
-                    StartTest(game, user, diagnose, questionsStorageMethod);
+                    StartTest(game, user, diagnose, questionsStorage, userResults);
                     break;
                 case 2:
-                    AddQuestionFromConsole(questionsStorageMethod);
+                    AddQuestionFromConsole(questionsStorage);
 
                     break;
                 case 3:
 
-                    DeleteQuestionFromConsole(questionsStorageMethod);
+                    DeleteQuestionFromConsole(questionsStorage);
 
                     break;
             }
         }
 
-        private static void DeleteQuestionFromConsole(IQuestionsStorage questionStorageMethod)
+        private static void DeleteQuestionFromConsole(IQuestionsStorage questionStorage)
         {
             do
             {
-                var questions = questionStorageMethod.GetAll();
+                var questions = questionStorage.GetAll();
 
                 var allowedNumbersForDeleteQuestion = FillArrayFromRange(1, questions.Count);
 
@@ -75,13 +76,13 @@ namespace GeniyIdiotConsoleApp
 
                 var questionForDelete = questions[answer - 1];
 
-                questionStorageMethod.Delete(questionForDelete);
+                questionStorage.Delete(questionForDelete);
 
                 Logs.OuputToConsole($"Вопрос №{answer} был удален из файла вопросов. Желаете удалить еще один?");
             } while (GetAnswerFromUser());
         }
 
-        private static void AddQuestionFromConsole(IQuestionsStorage questionStorageMethod)
+        private static void AddQuestionFromConsole(IQuestionsStorage questionStorage)
         {
             do
             {
@@ -90,13 +91,13 @@ namespace GeniyIdiotConsoleApp
                 Logs.OuputToConsole("Введите ответ на него:");
                 int answerQuestionForAdd = CheckIntRangeAnswerUser();
 
-                questionStorageMethod.Add(new Question(textQuestionForAdd, answerQuestionForAdd));
+                questionStorage.Add(new Question(textQuestionForAdd, answerQuestionForAdd));
 
                 Logs.OuputToConsole("Вопрос успешно добавлен. Желаете добавить еще один?");
             } while (GetAnswerFromUser());
         }
 
-        private static void StartTest(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorageMethod)
+        private static void StartTest(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorage, IUserResultsStorage userResults)
         {
             BeepSounds.StartGame();
 
@@ -108,7 +109,7 @@ namespace GeniyIdiotConsoleApp
             float percentRightAnswers;
             do
             {
-                GetQuestions(user, questionsStorageMethod);
+                GetQuestions(user, questionsStorage);
                 var messageDiagnose = game.CalculateDiagnose(user);
 
                 Logs.OuputToConsole(messageDiagnose);
@@ -123,7 +124,7 @@ namespace GeniyIdiotConsoleApp
 
             Logs.OuputToConsole("Вывести статистику игр? Да / Нет");
 
-            if (GetAnswerFromUser()) OutputStats(user);
+            if (GetAnswerFromUser()) OutputStats(user, userResults);
 
             var returnFontColorToDefault = ConsoleColor.White;
             Console.ForegroundColor = returnFontColorToDefault;
@@ -183,9 +184,9 @@ namespace GeniyIdiotConsoleApp
             return Enumerable.Range(startNumber, count).ToArray();
         }
 
-        public static void GetQuestions(User user, IQuestionsStorage questionsStorageMethod)
+        public static void GetQuestions(User user, IQuestionsStorage questionsStorage)
         {
-            var game = new Game(user, questionsStorageMethod);
+            var game = new Game(user, questionsStorage);
             int countRightAnswers = 0;
 
             var questionsAnswers = game.GetAllQuestions();
@@ -232,10 +233,10 @@ namespace GeniyIdiotConsoleApp
             return false;
         }
 
-        public static void OutputStats(User user)
+        public static void OutputStats(User user, IUserResultsStorage userResults)
         {
             Console.Clear();
-            var userStats = UsersResultStorage.GetAll();
+            var userStats = userResults.GetAll();
 
             string printHeaderGameStat = OutputViewFormat("Диагноз", "Результат", "ФИО");
             Logs.OuputToConsole(printHeaderGameStat);
@@ -243,8 +244,9 @@ namespace GeniyIdiotConsoleApp
 
             foreach (var userStat in userStats)
             {
-                Console.ForegroundColor = UsersResultStorage.IsCurrentGameStatistic(userStat.Name, userStat.PercentCorrectAnswers.ToString("0.00"), user.Name, user.PercentCorrectAnswers.ToString("0.00")) ? ConsoleColor.Green : ConsoleColor.White;
-
+                //Console.ForegroundColor = userResults.IsCurrentGameStatistic(userStat.Name, userStat.PercentCorrectAnswers.ToString("0.00"), user.Name, user.PercentCorrectAnswers.ToString("0.00")) ? ConsoleColor.Green : ConsoleColor.White;
+                Console.ForegroundColor = userStat.Name == user.Name && userStat.PercentCorrectAnswers.ToString("0.00") == user.PercentCorrectAnswers.ToString("0.00") ? ConsoleColor.Green : ConsoleColor.White;
+                
                 string printGameStat = OutputViewFormat(userStat.Diagnose, userStat.PercentCorrectAnswers.ToString(), userStat.Name);
                 Logs.OuputToConsole(printGameStat);
             }

@@ -10,7 +10,6 @@ namespace GeniyIdiot.Common
     {
         public void Add(Question question);
         public void Delete(Question questionForDelete);
-
         public List<Question> GetAll();
     }
 }

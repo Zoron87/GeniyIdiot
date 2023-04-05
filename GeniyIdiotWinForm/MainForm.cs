@@ -7,18 +7,20 @@ namespace GeniyIdiotWinForm
     {
         Game game;
         User user;
-        IQuestionsStorage questionsStorageMethod;
+        IQuestionsStorage questionsStorage;
+        IUserResultsStorage userResults;
 
         public MainForm()
         {
             InitializeComponent();
-            this.questionsStorageMethod = new QuestionsStorageInJson();
+            this.questionsStorage = new QuestionsStorageInJson();
+            this.userResults = new UserResultsStorageInJson();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             user = new User();
-            game = new Game(user, questionsStorageMethod);
+            game = new Game(user, questionsStorage);
 
             InputUsername inputUsername = new InputUsername();
             inputUsername.ShowDialog();
@@ -57,7 +59,7 @@ namespace GeniyIdiotWinForm
 
         private void ðåçóëüòàòûToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GameStatistic gameStatistic = new GameStatistic();
+            GameStatistic gameStatistic = new GameStatistic(userResults);
             gameStatistic.ShowDialog();
         }
 
@@ -74,13 +76,13 @@ namespace GeniyIdiotWinForm
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            AddQuestion addquestion = new AddQuestion(questionsStorageMethod);
+            AddQuestion addquestion = new AddQuestion(questionsStorage);
             addquestion.ShowDialog();
         }
 
         private void óäàëèòüÑóùåñòâóþùèéÂîïðîñToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DeleteQuestion deleteQuestion = new DeleteQuestion(questionsStorageMethod);
+            DeleteQuestion deleteQuestion = new DeleteQuestion(questionsStorage);
             deleteQuestion.ShowDialog();
         }
     }

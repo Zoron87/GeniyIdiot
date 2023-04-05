@@ -96,7 +96,7 @@
             this.answerNumericUpDown.Size = new System.Drawing.Size(241, 23);
             this.answerNumericUpDown.TabIndex = 14;
             // 
-            // Add
+            // AddQuestion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -107,7 +107,7 @@
             this.Controls.Add(this.questionTextBox);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
-            this.Name = "Add";
+            this.Name = "AddQuestion";
             this.Text = "Add";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
