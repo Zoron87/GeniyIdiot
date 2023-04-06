@@ -9,7 +9,7 @@ namespace GeniyIdiot.Common
 {
     public class UserResultsStorageInJson : IUserResultsStorage
     {
-        public static string statOfGamesPath = "StatisticOfGames.txt";
+        private static string statOfGamesPath = "StatisticOfGames.txt";
 
         public void SaveAll(User user)
         {
@@ -27,11 +27,6 @@ namespace GeniyIdiot.Common
             if (!IsOrderByDescending) return statsFromFile;
 
             return statsFromFile.OrderByDescending(s => s.PercentCorrectAnswers).ToList();
-        }
-
-        public bool IsCurrentGameStatistic(string nameUserCheckGame, string statCheckGame, string nameUserCurGame, string statCurGame)
-        {
-            return nameUserCheckGame == nameUserCurGame && statCheckGame == statCurGame;
         }
     }
 }
