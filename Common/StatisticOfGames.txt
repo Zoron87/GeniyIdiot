@@ -1,1 +1,0 @@
-[{"Name":"dfsdfds","PercentCorrectAnswers":33.33,"Diagnose":"Идиот"},{"Name":"Max","PercentCorrectAnswers":36.67,"Diagnose":"Кретин"}]

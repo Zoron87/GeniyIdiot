@@ -13,17 +13,17 @@ namespace GeniyIdiotWinFormsApp
 {
     public partial class GameStatistic : Form
     {
-        IUserResultsStorage userResults;
+        IUserResultsStorage usersStorage;
 
-        public GameStatistic(IUserResultsStorage userResults)
+        public GameStatistic(IUserResultsStorage usersStorage)
         {
             InitializeComponent();
-            this.userResults = userResults;
+            this.usersStorage = usersStorage;
         }
 
         private void GameStatistic_Load(object sender, EventArgs e)
         {
-            var gameStatistic = userResults.GetAll() ;
+            var gameStatistic = usersStorage.GetAll() ;
 
             foreach (var stat in gameStatistic)
             {

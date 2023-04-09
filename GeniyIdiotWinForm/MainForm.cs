@@ -8,19 +8,19 @@ namespace GeniyIdiotWinForm
         Game game;
         User user;
         IQuestionsStorage questionsStorage;
-        IUserResultsStorage userResults;
+        IUserResultsStorage usersStorage;
 
         public MainForm()
         {
             InitializeComponent();
-            this.questionsStorage = new QuestionsStorageInJson();
-            this.userResults = new UserResultsStorageInJson();
+            this.questionsStorage = new QuestionsStorageInDB();
+            this.usersStorage = new UserResultsStorageInDB();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             user = new User();
-            game = new Game(user, questionsStorage);
+            game = new Game(user, questionsStorage, usersStorage);
 
             InputUsername inputUsername = new InputUsername();
             inputUsername.ShowDialog();
@@ -59,7 +59,7 @@ namespace GeniyIdiotWinForm
 
         private void ðåçóëüòàòûToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GameStatistic gameStatistic = new GameStatistic(userResults);
+            GameStatistic gameStatistic = new GameStatistic(usersStorage);
             gameStatistic.ShowDialog();
         }
 

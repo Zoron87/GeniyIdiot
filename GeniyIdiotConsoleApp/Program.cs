@@ -18,18 +18,19 @@ namespace GeniyIdiotConsoleApp
             User user = new User();
             Diagnose diagnose = new Diagnose();
 
-            IQuestionsStorage questionsStorage = new QuestionsStorageInJson();
-            IUserResultsStorage userResults = new UserResultsStorageInJson();
+            IQuestionsStorage questionsStorage = new QuestionsStorageInDB();
 
-            Game game = new Game(user, questionsStorage);
+            IUserResultsStorage usersStorage = new UserResultsStorageInDB();
 
-            InitializateStartMenu(game, user, diagnose, questionsStorage, userResults);
+            Game game = new Game(user, questionsStorage, usersStorage);
+
+            InitializateStartMenu(game, user, diagnose, questionsStorage, usersStorage);
 
             gameTimer.Close();
             gameTimer.Dispose();
         }
 
-        public static void InitializateStartMenu(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorage, IUserResultsStorage userResults)
+        public static void InitializateStartMenu(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorage, IUserResultsStorage usersStorage)
         {
             Logs.OuputToConsole("Выберите подходящий пункт: \n 1. Пройти викторину \n 2. Добавить свой вопрос \n 3. Удалить вопрос из списка");
 
@@ -39,7 +40,7 @@ namespace GeniyIdiotConsoleApp
             switch (answerMenuOption)
             {
                 case 1:
-                    StartTest(game, user, diagnose, questionsStorage, userResults);
+                    StartTest(game, user, diagnose, questionsStorage, usersStorage);
                     break;
                 case 2:
                     AddQuestionFromConsole(questionsStorage);
@@ -97,7 +98,7 @@ namespace GeniyIdiotConsoleApp
             } while (GetAnswerFromUser());
         }
 
-        private static void StartTest(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorage, IUserResultsStorage userResults)
+        private static void StartTest(Game game, User user, Diagnose diagnose, IQuestionsStorage questionsStorage, IUserResultsStorage usersStorage)
         {
             BeepSounds.StartGame();
 
@@ -109,7 +110,7 @@ namespace GeniyIdiotConsoleApp
             float percentRightAnswers;
             do
             {
-                GetQuestions(user, questionsStorage);
+                GetQuestions(user, questionsStorage, usersStorage);
                 var messageDiagnose = game.CalculateDiagnose(user);
 
                 Logs.OuputToConsole(messageDiagnose);
@@ -124,7 +125,7 @@ namespace GeniyIdiotConsoleApp
 
             Logs.OuputToConsole("Вывести статистику игр? Да / Нет");
 
-            if (GetAnswerFromUser()) OutputStats(user, userResults);
+            if (GetAnswerFromUser()) OutputStats(user, usersStorage);
 
             var returnFontColorToDefault = ConsoleColor.White;
             Console.ForegroundColor = returnFontColorToDefault;
@@ -184,9 +185,9 @@ namespace GeniyIdiotConsoleApp
             return Enumerable.Range(startNumber, count).ToArray();
         }
 
-        public static void GetQuestions(User user, IQuestionsStorage questionsStorage)
+        public static void GetQuestions(User user, IQuestionsStorage questionsStorage, IUserResultsStorage usersStorage)
         {
-            var game = new Game(user, questionsStorage);
+            var game = new Game(user, questionsStorage, usersStorage);
             int countRightAnswers = 0;
 
             var questionsAnswers = game.GetAllQuestions();

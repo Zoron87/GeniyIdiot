@@ -20,11 +20,13 @@ namespace GeniyIdiot.Common
         private int questionsCounter = -1;
         private decimal userAnswer = -1;
         IQuestionsStorage questionStorage;
+        IUserResultsStorage usersStorage;
 
-        public Game(User user, IQuestionsStorage questionStorage)
+        public Game(User user, IQuestionsStorage questionStorage, IUserResultsStorage usersStorage)
         {
             this.user = user;
             this.questionStorage = questionStorage;
+            this.usersStorage = usersStorage;
             questions = questionStorage.GetAll();
         }
 
@@ -62,7 +64,7 @@ namespace GeniyIdiot.Common
 
             user.Diagnose = diagnose.Calc(user);
 
-            UsersResultStorage.SaveAll(user);
+            usersStorage.SaveAll(user);
 
             return $"{user.Name}, Ваш диагноз - {user.Diagnose}";
         }

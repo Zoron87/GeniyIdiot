@@ -6,21 +6,26 @@ using System.Threading.Tasks;
 
 namespace GeniyIdiot.Common
 {
-    internal class QuestionsStorageInDB : IQuestionsStorage
+    public class QuestionsStorageInDB : IQuestionsStorage
     {
+        DatabaseContext context = new DatabaseContext();
+
         public void Add(Question question)
         {
-            throw new NotImplementedException();
+            context.Question.Add(question);
+            context.SaveChanges();
         }
 
         public void Delete(Question questionForDelete)
         {
-            throw new NotImplementedException();
+            context.Question.Remove(questionForDelete);
+            context.SaveChanges();
         }
 
         public List<Question> GetAll()
         {
-            throw new NotImplementedException();
+            //return context.Question.OrderBy(q => new Random().Next(q.id)).ToList(); - НЕ РАБОТАЕТ!
+            return context.Question.ToList().Select(q=>q).OrderBy(q => new Random().Next()).ToList();
         }
     }
 }
