@@ -20,6 +20,10 @@ namespace GeniyIdiot.Common
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            // I have removed a convention to Pluralize the table names from DatabaseContext class
+            // If you will remove this line you will get  
+            // System.Data.Entity.Infrastructure.DbUpdateException
+
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             base.OnModelCreating(modelBuilder);
         }
