@@ -24,7 +24,6 @@ namespace GeniyIdiot.Common
 
         public List<Question> GetAll()
         {
-            //return context.Question.OrderBy(q => new Random().Next(q.id)).ToList(); - НЕ РАБОТАЕТ!
             return context.Question.ToList().Select(q=>q).OrderBy(q => new Random().Next()).ToList();
         }
     }
