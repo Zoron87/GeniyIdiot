@@ -6,6 +6,8 @@ namespace _2048WinFormsApp
         private Label[,] labelsMap;
         private static Random random = new Random();
         private int score = 0;
+        User user;
+        IUserResultsStorage userResults;
 
         public MainForm()
         {
@@ -14,12 +16,23 @@ namespace _2048WinFormsApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            User user = new User();
-            IUserResultsStorage userResults = new UserResultsStorageJson();
+            StartSettingsForm userNameForm = new StartSettingsForm();
+            userNameForm.ShowDialog();
+
+            user = new User(userNameForm.userName);
+
+            userResults = new UserResultsStorageJson();
+            bestScoreLabel.Text = GetBestScore().ToString();
 
             InitMap();
             GenerateNumber();
             ShowScore();
+        }
+
+        private int GetBestScore()
+        {
+            var allStatistics = userResults.GetAll();
+            return allStatistics.Select(x => x.Score).Max(); ;
         }
 
         private void ShowScore()
@@ -48,6 +61,9 @@ namespace _2048WinFormsApp
             {
                 if (isFullMap())
                 {
+                    user.Score = score;
+                    userResults.SaveAll(user);
+
                     if (MessageBox.Show("Игра окончена! Запустить игру повторно?", "Game Over!", MessageBoxButtons.OKCancel) == DialogResult.OK)
                         Application.Restart();
                     break;
@@ -319,7 +335,8 @@ namespace _2048WinFormsApp
 
         private void статистикаИгрыToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            GameStatisticForm gameStatisticForm = new GameStatisticForm();
+            gameStatisticForm.Show();
         }
     }
 }

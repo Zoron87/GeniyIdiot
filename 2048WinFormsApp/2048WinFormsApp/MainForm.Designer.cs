@@ -34,8 +34,10 @@
             this.менюToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.перезапуститьИгруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.статистикаИгрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label2 = new System.Windows.Forms.Label();
+            this.bestScoreLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +45,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(189, 4);
+            this.label1.Location = new System.Drawing.Point(166, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(59, 25);
             this.label1.TabIndex = 0;
@@ -51,11 +53,10 @@
             // 
             // scoreLabel
             // 
-            this.scoreLabel.AutoSize = true;
             this.scoreLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.scoreLabel.Location = new System.Drawing.Point(248, 4);
+            this.scoreLabel.Location = new System.Drawing.Point(166, 33);
             this.scoreLabel.Name = "scoreLabel";
-            this.scoreLabel.Size = new System.Drawing.Size(23, 25);
+            this.scoreLabel.Size = new System.Drawing.Size(59, 25);
             this.scoreLabel.TabIndex = 1;
             this.scoreLabel.Text = "0";
             // 
@@ -95,13 +96,6 @@
             this.перезапуститьИгруToolStripMenuItem.Text = "Перезапустить игру";
             this.перезапуститьИгруToolStripMenuItem.Click += new System.EventHandler(this.перезапуститьИгруToolStripMenuItem_Click);
             // 
-            // выходToolStripMenuItem
-            // 
-            this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
-            this.выходToolStripMenuItem.Size = new System.Drawing.Size(256, 30);
-            this.выходToolStripMenuItem.Text = "Выход";
-            this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
-            // 
             // статистикаИгрыToolStripMenuItem
             // 
             this.статистикаИгрыToolStripMenuItem.Name = "статистикаИгрыToolStripMenuItem";
@@ -109,12 +103,40 @@
             this.статистикаИгрыToolStripMenuItem.Text = "Статистика игры";
             this.статистикаИгрыToolStripMenuItem.Click += new System.EventHandler(this.статистикаИгрыToolStripMenuItem_Click);
             // 
+            // выходToolStripMenuItem
+            // 
+            this.выходToolStripMenuItem.Name = "выходToolStripMenuItem";
+            this.выходToolStripMenuItem.Size = new System.Drawing.Size(256, 30);
+            this.выходToolStripMenuItem.Text = "Выход";
+            this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(232, 5);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(85, 25);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Рекорд:";
+            // 
+            // bestScoreLabel
+            // 
+            this.bestScoreLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.bestScoreLabel.Location = new System.Drawing.Point(232, 35);
+            this.bestScoreLabel.Name = "bestScoreLabel";
+            this.bestScoreLabel.Size = new System.Drawing.Size(59, 25);
+            this.bestScoreLabel.TabIndex = 4;
+            this.bestScoreLabel.Text = "0";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(320, 399);
+            this.Controls.Add(this.bestScoreLabel);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.scoreLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
@@ -140,5 +162,7 @@
         private ToolStripMenuItem перезапуститьИгруToolStripMenuItem;
         private ToolStripMenuItem выходToolStripMenuItem;
         private ToolStripMenuItem статистикаИгрыToolStripMenuItem;
+        private Label label2;
+        private Label bestScoreLabel;
     }
 }

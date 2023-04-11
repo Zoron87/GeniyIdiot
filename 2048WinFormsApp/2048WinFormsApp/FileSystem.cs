@@ -10,7 +10,7 @@ namespace _2048WinFormsApp
     {
         public static bool SaveData(string filePath, string data)
         {
-            File.AppendAllText(filePath, data + Environment.NewLine);
+            File.WriteAllText(filePath, data + Environment.NewLine);
             return true;
         }
 
