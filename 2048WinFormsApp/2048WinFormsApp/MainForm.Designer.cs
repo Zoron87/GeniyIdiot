@@ -35,6 +35,7 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.перезапуститьИгруToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.выходToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.статистикаИгрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,6 +74,7 @@
             this.менюToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
             this.перезапуститьИгруToolStripMenuItem,
+            this.статистикаИгрыToolStripMenuItem,
             this.выходToolStripMenuItem});
             this.менюToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.менюToolStripMenuItem.Name = "менюToolStripMenuItem";
@@ -99,6 +101,13 @@
             this.выходToolStripMenuItem.Size = new System.Drawing.Size(256, 30);
             this.выходToolStripMenuItem.Text = "Выход";
             this.выходToolStripMenuItem.Click += new System.EventHandler(this.выходToolStripMenuItem_Click);
+            // 
+            // статистикаИгрыToolStripMenuItem
+            // 
+            this.статистикаИгрыToolStripMenuItem.Name = "статистикаИгрыToolStripMenuItem";
+            this.статистикаИгрыToolStripMenuItem.Size = new System.Drawing.Size(256, 30);
+            this.статистикаИгрыToolStripMenuItem.Text = "Статистика игры";
+            this.статистикаИгрыToolStripMenuItem.Click += new System.EventHandler(this.статистикаИгрыToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -130,5 +139,6 @@
         private ToolStripMenuItem toolStripMenuItem1;
         private ToolStripMenuItem перезапуститьИгруToolStripMenuItem;
         private ToolStripMenuItem выходToolStripMenuItem;
+        private ToolStripMenuItem статистикаИгрыToolStripMenuItem;
     }
 }

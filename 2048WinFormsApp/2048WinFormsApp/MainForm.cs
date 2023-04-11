@@ -14,6 +14,9 @@ namespace _2048WinFormsApp
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            User user = new User();
+            IUserResultsStorage userResults = new UserResultsStorageJson();
+
             InitMap();
             GenerateNumber();
             ShowScore();
@@ -296,6 +299,11 @@ namespace _2048WinFormsApp
         private void âûõîäToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void ñòàòèñòèêàÈãğûToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
