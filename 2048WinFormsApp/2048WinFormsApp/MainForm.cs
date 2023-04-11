@@ -2,7 +2,7 @@ namespace _2048WinFormsApp
 {
     public partial class MainForm : Form
     {
-        private const int mapSize = 4;
+        private int mapSize;
         private Label[,] labelsMap;
         private static Random random = new Random();
         private int score = 0;
@@ -20,6 +20,8 @@ namespace _2048WinFormsApp
             userNameForm.ShowDialog();
 
             user = new User(userNameForm.userName);
+            mapSize = userNameForm.mapSize;
+
 
             userResults = new UserResultsStorageJson();
             bestScoreLabel.Text = GetBestScore().ToString();
