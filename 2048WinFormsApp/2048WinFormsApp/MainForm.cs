@@ -46,6 +46,12 @@ namespace _2048WinFormsApp
         {
             while (true)
             {
+                if (isFullMap())
+                {
+                    if (MessageBox.Show("Игра окончена! Запустить игру повторно?", "Game Over!", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                        Application.Restart();
+                    break;
+                }
                 var randomNumberLabel = random.Next(mapSize * mapSize);
                 var indexRow = randomNumberLabel / mapSize;
                 var indexColumn = randomNumberLabel % mapSize;
@@ -56,6 +62,16 @@ namespace _2048WinFormsApp
                     break;
                 }
             }
+        }
+
+        private bool isFullMap()
+        {
+            for (int i=0; i<mapSize; i++)
+                for (int j = 0; j < mapSize; j++)
+                {
+                    if (labelsMap[i, j].Text == String.Empty) return false;
+                }
+            return true;
         }
 
         private Label CreateLabel(int indexRow, int indexColumn, int number)
