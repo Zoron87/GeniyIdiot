@@ -49,7 +49,7 @@ namespace _2048WinFormsApp
 
                 if (labelsMap[indexRow, indexColumn].Text == string.Empty)
                 {
-                    labelsMap[indexRow, indexColumn].Text = "2";
+                    labelsMap[indexRow, indexColumn].Text = (random.Next(100) < 75)? "2" : "4";
                     break;
                 }
             }
