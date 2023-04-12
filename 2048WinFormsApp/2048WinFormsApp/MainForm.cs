@@ -78,7 +78,7 @@ namespace _2048WinFormsApp
                 if (labelsMap[indexRow, indexColumn].Text == string.Empty)
                 {
                     labelsMap[indexRow, indexColumn].Text = (random.Next(100) < 75)? "2" : "4";
-                    labelsMap[indexRow, indexColumn].BackColor = ChangeLabelBackColor(labelsMap[indexRow, indexColumn].Text);
+                    ChangeLabelBackColor(labelsMap[indexRow, indexColumn]);
                     break;
                 }
             }
@@ -106,6 +106,7 @@ namespace _2048WinFormsApp
             int x = 10 + indexColumn * 76;
             int y = 70 + indexRow * 76;
             label.Location = new Point(x, y);
+            label.TextChanged += Label_TextChanged;
 
             return label;
         }
@@ -156,7 +157,6 @@ namespace _2048WinFormsApp
                                     score += number * 2;
                                     
                                     labelsMap[i, j].Text = (number * 2).ToString();
-                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
 
                                     labelsMap[k, j].Text = String.Empty;
                                     labelsMap[k, j].BackColor = Color.Gray;
@@ -179,7 +179,6 @@ namespace _2048WinFormsApp
                             if (labelsMap[k, j].Text != String.Empty)
                             {
                                 labelsMap[i, j].Text = labelsMap[k, j].Text;
-                                labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
 
                                 labelsMap[k, j].Text = String.Empty;
                                 labelsMap[k, j].BackColor = Color.Gray;
@@ -209,7 +208,6 @@ namespace _2048WinFormsApp
                                     score += number * 2;
                                    
                                     labelsMap[i, j].Text = (number * 2).ToString();
-                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
 
                                     labelsMap[k, j].Text = String.Empty;
                                     labelsMap[k, j].BackColor = Color.Gray;
@@ -232,7 +230,6 @@ namespace _2048WinFormsApp
                             if (labelsMap[k, j].Text != String.Empty)
                             {
                                 labelsMap[i, j].Text = labelsMap[k, j].Text;
-                                labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
 
                                 labelsMap[k, j].Text = String.Empty;
                                 labelsMap[k, j].BackColor = Color.Gray;
@@ -262,7 +259,6 @@ namespace _2048WinFormsApp
                                     score += number * 2;
 
                                     labelsMap[i, j].Text = (number * 2).ToString();
-                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
 
                                     labelsMap[i, k].Text = String.Empty;
                                     labelsMap[i, k].BackColor = Color.Gray;
@@ -285,7 +281,6 @@ namespace _2048WinFormsApp
                             if (labelsMap[i, k].Text != String.Empty)
                             {
                                 labelsMap[i, j].Text = labelsMap[i, k].Text;
-                                labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
 
                                 labelsMap[i, k].Text = String.Empty;
                                 labelsMap[i, k].BackColor = Color.Gray;
@@ -315,7 +310,6 @@ namespace _2048WinFormsApp
                                     score += number * 2;
 
                                     labelsMap[i, j].Text = (number * 2).ToString();
-                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
 
                                     labelsMap[i, k].Text = String.Empty;
                                     labelsMap[i, k].BackColor = Color.Gray;
@@ -338,7 +332,6 @@ namespace _2048WinFormsApp
                             if (labelsMap[i, k].Text != String.Empty)
                             {
                                 labelsMap[i, j].Text = labelsMap[i, k].Text;
-                                labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
 
                                 labelsMap[i, k].Text = String.Empty;
                                 labelsMap[i, k].BackColor = Color.Gray;
@@ -350,41 +343,60 @@ namespace _2048WinFormsApp
             }
         }
 
-        private Color ChangeLabelBackColor(string number)
+        private Color ChangeLabelBackColor(Label currentLabel)
         {
-            switch (number)
+            switch (currentLabel.Text)
             {
+                case "2":
+                    currentLabel.BackColor = Color.Gray;
+                    break;
+
                 case "4":
-                    return Color.DarkGray;
+                    currentLabel.BackColor = Color.DarkGray;
+                    break;
 
                 case "8":
-                   return Color.Orange;
+                    currentLabel.BackColor = Color.Orange;
+                    break;
 
                 case "16":
-                    return Color.DarkOrange;
+                    currentLabel.BackColor = Color.DarkOrange;
+                    break;
 
                 case "32":
-                    return Color.Magenta;
+                    currentLabel.BackColor = Color.Magenta;
+                    break;
 
                 case "64":
-                    return Color.DarkMagenta;
+                    currentLabel.BackColor = Color.DarkMagenta;
+                    break;
 
                 case "128":
-                    return Color.Red;
+                    currentLabel.BackColor = Color.Red;
+                    break;
 
                 case "256":
-                    return Color.DarkRed;
+                    currentLabel.BackColor = Color.DarkRed;
+                    break;
 
                 case "512":
-                    return Color.Blue;
+                    currentLabel.BackColor = Color.Blue;
+                    break;
 
                 case "1024":
-                    return Color.DarkBlue;
+                    currentLabel.BackColor = Color.DarkBlue;
+                    break;
 
                 case "2048":
-                    return Color.Black;
+                    currentLabel.BackColor = Color.Black;
+                    break;
             }
             return Color.Gray;
+        }
+
+        private void Label_TextChanged(object sender, EventArgs e)
+        {
+            ChangeLabelBackColor((Label)sender);
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
