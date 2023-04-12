@@ -6,6 +6,7 @@ namespace _2048WinFormsApp
         private Label[,] labelsMap;
         private static Random random = new Random();
         private int score = 0;
+        int number;
         User user;
         IUserResultsStorage userResults;
 
@@ -96,8 +97,9 @@ namespace _2048WinFormsApp
         {
             var label = new Label();
 
-            label.BackColor = SystemColors.ControlDark;
+            label.BackColor = Color.Gray;
             label.Font = new Font("Segoe UI", 18F, FontStyle.Bold,GraphicsUnit.Point);
+            label.ForeColor = Color.White;
             label.Size = new Size(70, 70);
             label.TextAlign = ContentAlignment.MiddleCenter;
             int x = 10 + indexColumn * 76;
@@ -149,10 +151,15 @@ namespace _2048WinFormsApp
                             {
                                 if (labelsMap[i, j].Text == labelsMap[k, j].Text)
                                 {
-                                    var number = int.Parse(labelsMap[i, j].Text);
+                                    number = int.Parse(labelsMap[i, j].Text);
                                     score += number * 2;
+                                    
                                     labelsMap[i, j].Text = (number * 2).ToString();
+                                    var test = labelsMap[i, j].Text;
+                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(test);
+
                                     labelsMap[k, j].Text = String.Empty;
+                                    labelsMap[k, j].BackColor = Color.Gray;
                                 }
                                 break;
                             }
@@ -172,7 +179,10 @@ namespace _2048WinFormsApp
                             if (labelsMap[k, j].Text != String.Empty)
                             {
                                 labelsMap[i, j].Text = labelsMap[k, j].Text;
+                                labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
+
                                 labelsMap[k, j].Text = String.Empty;
+                                labelsMap[k, j].BackColor = Color.Gray;
                                 break;
                             }
                         }
@@ -195,10 +205,14 @@ namespace _2048WinFormsApp
                             {
                                 if (labelsMap[i, j].Text == labelsMap[k, j].Text)
                                 {
-                                    var number = int.Parse(labelsMap[i, j].Text);
+                                    number = int.Parse(labelsMap[i, j].Text);
                                     score += number * 2;
+                                   
                                     labelsMap[i, j].Text = (number * 2).ToString();
+                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
+
                                     labelsMap[k, j].Text = String.Empty;
+                                    labelsMap[k, j].BackColor = Color.Gray;
                                 }
                                 break;
                             }
@@ -218,7 +232,10 @@ namespace _2048WinFormsApp
                             if (labelsMap[k, j].Text != String.Empty)
                             {
                                 labelsMap[i, j].Text = labelsMap[k, j].Text;
+                                labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
+
                                 labelsMap[k, j].Text = String.Empty;
+                                labelsMap[k, j].BackColor = Color.Gray;
                                 break;
                             }
                         }
@@ -241,10 +258,14 @@ namespace _2048WinFormsApp
                             {
                                 if (labelsMap[i, j].Text == labelsMap[i, k].Text)
                                 {
-                                    var number = int.Parse(labelsMap[i, j].Text);
+                                    number = int.Parse(labelsMap[i, j].Text);
                                     score += number * 2;
+
                                     labelsMap[i, j].Text = (number * 2).ToString();
+                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
+
                                     labelsMap[i, k].Text = String.Empty;
+                                    labelsMap[i, k].BackColor = Color.Gray;
                                 }
                                 break;
                             }
@@ -264,7 +285,10 @@ namespace _2048WinFormsApp
                             if (labelsMap[i, k].Text != String.Empty)
                             {
                                 labelsMap[i, j].Text = labelsMap[i, k].Text;
+                                labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
+
                                 labelsMap[i, k].Text = String.Empty;
+                                labelsMap[i, k].BackColor = Color.Gray;
                                 break;
                             }
                         }
@@ -279,6 +303,7 @@ namespace _2048WinFormsApp
             {
                 for (int j = mapSize - 1; j >= 0; j--)
                 {
+                    var test = labelsMap[i, j].Text;
                     if (labelsMap[i, j].Text != String.Empty)
                     {
                         for (int k = j - 1; k >= 0; k--)
@@ -287,10 +312,14 @@ namespace _2048WinFormsApp
                             {
                                 if (labelsMap[i, j].Text == labelsMap[i, k].Text)
                                 {
-                                    var number = int.Parse(labelsMap[i, j].Text);
+                                    number = int.Parse(labelsMap[i, j].Text);
                                     score += number * 2;
+
                                     labelsMap[i, j].Text = (number * 2).ToString();
+                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
+
                                     labelsMap[i, k].Text = String.Empty;
+                                    labelsMap[i, k].BackColor = Color.Gray;
                                 }
                                 break;
                             }
@@ -310,13 +339,53 @@ namespace _2048WinFormsApp
                             if (labelsMap[i, k].Text != String.Empty)
                             {
                                 labelsMap[i, j].Text = labelsMap[i, k].Text;
+                                labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
+
                                 labelsMap[i, k].Text = String.Empty;
+                                labelsMap[i, k].BackColor = Color.Gray;
                                 break;
                             }
                         }
                     }
                 }
             }
+        }
+
+        private Color ChangeLabelBackColor(string number)
+        {
+            switch (number)
+            {
+                case "4":
+                    return Color.DarkGray;
+
+                case "8":
+                   return Color.Orange;
+
+                case "16":
+                    return Color.DarkOrange;
+
+                case "32":
+                    return Color.Magenta;
+
+                case "64":
+                    return Color.DarkMagenta;
+
+                case "128":
+                    return Color.Red;
+
+                case "256":
+                    return Color.DarkRed;
+
+                case "512":
+                    return Color.Blue;
+
+                case "1024":
+                    return Color.DarkBlue;
+
+                case "2048":
+                    return Color.Black;
+            }
+            return Color.Gray;
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
