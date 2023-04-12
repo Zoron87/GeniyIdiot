@@ -78,6 +78,7 @@ namespace _2048WinFormsApp
                 if (labelsMap[indexRow, indexColumn].Text == string.Empty)
                 {
                     labelsMap[indexRow, indexColumn].Text = (random.Next(100) < 75)? "2" : "4";
+                    labelsMap[indexRow, indexColumn].BackColor = ChangeLabelBackColor(labelsMap[indexRow, indexColumn].Text);
                     break;
                 }
             }
@@ -155,8 +156,7 @@ namespace _2048WinFormsApp
                                     score += number * 2;
                                     
                                     labelsMap[i, j].Text = (number * 2).ToString();
-                                    var test = labelsMap[i, j].Text;
-                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(test);
+                                    labelsMap[i, j].BackColor = ChangeLabelBackColor(labelsMap[i, j].Text);
 
                                     labelsMap[k, j].Text = String.Empty;
                                     labelsMap[k, j].BackColor = Color.Gray;
@@ -303,7 +303,6 @@ namespace _2048WinFormsApp
             {
                 for (int j = mapSize - 1; j >= 0; j--)
                 {
-                    var test = labelsMap[i, j].Text;
                     if (labelsMap[i, j].Text != String.Empty)
                     {
                         for (int k = j - 1; k >= 0; k--)
