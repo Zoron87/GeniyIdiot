@@ -261,7 +261,6 @@ namespace _2048WinFormsApp
                                     labelsMap[i, j].Text = (number * 2).ToString();
 
                                     labelsMap[i, k].Text = String.Empty;
-                                    labelsMap[i, k].BackColor = Color.Gray;
                                 }
                                 break;
                             }
@@ -283,7 +282,6 @@ namespace _2048WinFormsApp
                                 labelsMap[i, j].Text = labelsMap[i, k].Text;
 
                                 labelsMap[i, k].Text = String.Empty;
-                                labelsMap[i, k].BackColor = Color.Gray;
                                 break;
                             }
                         }
@@ -312,7 +310,6 @@ namespace _2048WinFormsApp
                                     labelsMap[i, j].Text = (number * 2).ToString();
 
                                     labelsMap[i, k].Text = String.Empty;
-                                    labelsMap[i, k].BackColor = Color.Gray;
                                 }
                                 break;
                             }
@@ -334,7 +331,6 @@ namespace _2048WinFormsApp
                                 labelsMap[i, j].Text = labelsMap[i, k].Text;
 
                                 labelsMap[i, k].Text = String.Empty;
-                                labelsMap[i, k].BackColor = Color.Gray;
                                 break;
                             }
                         }
