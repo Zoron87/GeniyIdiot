@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using Timer = System.Windows.Forms.Timer;
 
-namespace BallGamesWinFormsApp
+namespace CommonWinFormsLibrary
 {
     public class MoveBall : RandomSizeAndPointBall
     {
-        private Timer timer;
-        public MoveBall(MainForm form) : base(form)
+        private Form form;
+        Timer timer = new Timer();
+
+        public MoveBall(Form form) : base(form)
         {
-            timer = new Timer();
-            timer.Interval = 20;
+            this.form = form;
+            timer.Start();
             timer.Tick += Timer_Tick;
         }
 

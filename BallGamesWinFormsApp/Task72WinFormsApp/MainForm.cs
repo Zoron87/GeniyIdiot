@@ -1,3 +1,5 @@
+using CommonWinFormsLibrary;
+
 namespace Task72WinFormsApp
 {
     public partial class MainForm : Form
@@ -35,7 +37,7 @@ namespace Task72WinFormsApp
         {
             for (int i = 0; i < moveBalls.Count; i++)
             {
-                if (moveBalls[i].isBallClick(moveBalls[i], e.X, e.Y))
+                if (moveBalls[i].isBallClick(e.X, e.Y))
                 {
                     moveBalls[i].Stop();
                     moveBalls[i].Recolor();

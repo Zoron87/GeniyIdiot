@@ -4,8 +4,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BallGamesWinFormsApp", "BallGamesWinFormsApp\BallGamesWinFormsApp.csproj", "{82D5F564-2111-489D-A4F2-99BFE203F098}"
+	ProjectSection(ProjectDependencies) = postProject
+		{00C85F08-D259-45BD-8537-A0374538E47D} = {00C85F08-D259-45BD-8537-A0374538E47D}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task72WinFormsApp", "Task72WinFormsApp\Task72WinFormsApp.csproj", "{7528A730-648D-41F3-B614-53CA9CA10925}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task72WinFormsApp", "Task72WinFormsApp\Task72WinFormsApp.csproj", "{7528A730-648D-41F3-B614-53CA9CA10925}"
+	ProjectSection(ProjectDependencies) = postProject
+		{82D5F564-2111-489D-A4F2-99BFE203F098} = {82D5F564-2111-489D-A4F2-99BFE203F098}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonWinFormsLibrary", "CommonWinFormsLibrary\CommonWinFormsLibrary.csproj", "{00C85F08-D259-45BD-8537-A0374538E47D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +29,10 @@ Global
 		{7528A730-648D-41F3-B614-53CA9CA10925}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7528A730-648D-41F3-B614-53CA9CA10925}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7528A730-648D-41F3-B614-53CA9CA10925}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00C85F08-D259-45BD-8537-A0374538E47D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00C85F08-D259-45BD-8537-A0374538E47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00C85F08-D259-45BD-8537-A0374538E47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00C85F08-D259-45BD-8537-A0374538E47D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

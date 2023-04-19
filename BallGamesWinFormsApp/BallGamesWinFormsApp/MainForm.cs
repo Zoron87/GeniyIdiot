@@ -1,6 +1,7 @@
+using CommonWinFormsLibrary;
+
 namespace BallGamesWinFormsApp
 {
-    
     public partial class MainForm : Form
     {
         Random random = new Random();
@@ -44,7 +45,7 @@ namespace BallGamesWinFormsApp
             {
                moveBalls.ForEach(b => b.Stop());
 
-               catchBallsNumberLabel.Text = moveBalls.Where(b => b.isCatch()).Count().ToString(); 
+               catchBallsNumberLabel.Text = moveBalls.Where(b => b.isCatchOnForm()).Count().ToString(); 
             }
             else MessageBox.Show("Сначала нажмите кнопку 'Создать'!");
         }

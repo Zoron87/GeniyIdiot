@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task72WinFormsApp
+namespace CommonWinFormsLibrary
 {
     public class RandomSizeAndPointBall : Ball
     {
-        public RandomSizeAndPointBall(MainForm form) : base(form)
+        public RandomSizeAndPointBall(Form form) : base(form)
         {
             x = random.Next(0, form.ClientSize.Width);
             y = random.Next(0, form.ClientSize.Height);

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Task72WinFormsApp
+namespace CommonWinFormsLibrary
 {
     public class Ball
     {
-        protected Random random = new Random();  
-        
-        private MainForm form;
+        protected Random random = new Random();
+
+        private Form form;
 
         protected int x = 50;
         protected int y = 50;
@@ -19,7 +19,7 @@ namespace Task72WinFormsApp
         protected int vx = 1;
         protected int vy = 1;
 
-        public Ball(MainForm form)
+        public Ball(Form form)
         {
             this.form = form;
         }
@@ -33,30 +33,36 @@ namespace Task72WinFormsApp
 
         public void Show()
         {
-            var graphics = form.CreateGraphics();
-            Brush brush = Brushes.Aqua;
-            Rectangle rectangle = new Rectangle(x, y, size, size);
-            graphics.FillEllipse(brush, rectangle);
+            Init(Brushes.Aqua);
         }
 
-        public bool isBallClick(Ball ball, int x, int y)
+        public bool isBallClick(int x, int y)
         {
-            var centerX = ball.x + size / 2;
-            var centerY = ball.y + size / 2;
+            var centerX = this.x + size / 2;
+            var centerY = this.y + size / 2;
             var radiusBall = size / 2;
 
             var clickInBall = Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2) <= Math.Pow(radiusBall, 2);
-            var ballOnForm = (ball.x <= form.ClientSize.Width-size && ball.y <= form.ClientSize.Height - size) && (ball.x > 0 && ball.y > 0);
 
-            return clickInBall && ballOnForm;
+            return clickInBall && isCatchOnForm();
+        }
+
+        public bool isCatchOnForm()
+        {
+            return x <= form.ClientSize.Width - size && y <= form.ClientSize.Height - size && x >= 0 && y >= 0;
+        }
+
+        public void Init(Brush brush)
+        {
+            if (brush == null) brush = Brushes.Aqua;
+            var graphics = form.CreateGraphics();
+            Rectangle rectangle = new Rectangle(x, y, size, size);
+            graphics.FillEllipse(brush, rectangle);
         }
 
         public void Recolor()
         {
-            var graphics = form.CreateGraphics();
-            Brush brush = Brushes.Gray;
-            Rectangle rectangle = new Rectangle(x, y, size, size);
-            graphics.FillEllipse(brush, rectangle);
+            Init(Brushes.Gray);
         }
 
         private void Go()
@@ -67,10 +73,7 @@ namespace Task72WinFormsApp
 
         private void Clear()
         {
-            var graphics = form.CreateGraphics();
-            Brush brush = Brushes.White;
-            Rectangle rectangle = new Rectangle(x, y, size, size);
-            graphics.FillEllipse(brush, rectangle);
+            Init(Brushes.White);
         }
     }
 }

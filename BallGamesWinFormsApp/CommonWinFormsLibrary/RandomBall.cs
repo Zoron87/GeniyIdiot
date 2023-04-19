@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BallGamesWinFormsApp
+namespace CommonWinFormsLibrary
 {
     public class RandomBall : Ball
     {
         static Random random = new Random();
-        public RandomBall(MainForm form) : base(form)
+        public RandomBall(Form form) : base(form)
         {
             x = random.Next(0, form.ClientSize.Width);
             y = random.Next(0, form.ClientSize.Height);
