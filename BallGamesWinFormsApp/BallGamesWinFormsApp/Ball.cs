@@ -30,6 +30,7 @@ namespace BallGamesWinFormsApp
             Rectangle rectangle = new Rectangle(x, y, size, size);
             graphics.FillEllipse(brush, rectangle);
         }
+
         public void Move()
         {
             Clear();
