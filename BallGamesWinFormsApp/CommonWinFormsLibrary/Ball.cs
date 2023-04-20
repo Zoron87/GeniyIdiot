@@ -36,7 +36,7 @@ namespace CommonWinFormsLibrary
             Init(Brushes.Aqua);
         }
 
-        public bool isBallClick(int x, int y)
+        public bool IsBallClick(int x, int y)
         {
             var centerX = this.x + size / 2;
             var centerY = this.y + size / 2;
@@ -44,10 +44,10 @@ namespace CommonWinFormsLibrary
 
             var clickInBall = Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2) <= Math.Pow(radiusBall, 2);
 
-            return clickInBall && isCatchOnForm();
+            return clickInBall;
         }
 
-        public bool isCatchOnForm()
+        public bool IsCatchOnForm()
         {
             return x <= form.ClientSize.Width - size && y <= form.ClientSize.Height - size && x >= 0 && y >= 0;
         }

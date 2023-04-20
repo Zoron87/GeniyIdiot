@@ -45,7 +45,7 @@ namespace BallGamesWinFormsApp
             {
                moveBalls.ForEach(b => b.Stop());
 
-               catchBallsNumberLabel.Text = moveBalls.Where(b => b.isCatchOnForm()).Count().ToString(); 
+               catchBallsNumberLabel.Text = moveBalls.Where(b => b.IsCatchOnForm()).Count().ToString(); 
             }
             else MessageBox.Show("Сначала нажмите кнопку 'Создать'!");
         }

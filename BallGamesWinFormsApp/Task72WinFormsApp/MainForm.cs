@@ -37,7 +37,7 @@ namespace Task72WinFormsApp
         {
             for (int i = 0; i < moveBalls.Count; i++)
             {
-                if (moveBalls[i].isBallClick(e.X, e.Y))
+                if (moveBalls[i].IsBallClick(e.X, e.Y) && moveBalls[i].IsCatchOnForm())
                 {
                     moveBalls[i].Stop();
                     moveBalls[i].Recolor();
