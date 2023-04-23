@@ -11,8 +11,8 @@ namespace CommonWinFormsLibrary
         static Random random = new Random();
         public RandomBall(Form form) : base(form)
         {
-            x = random.Next(0, form.ClientSize.Width);
-            y = random.Next(0, form.ClientSize.Height);
+            centerX = random.Next(0, form.ClientSize.Width);
+            centerY = random.Next(0, form.ClientSize.Height);
         }
     }
 }

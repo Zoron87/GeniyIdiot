@@ -8,7 +8,7 @@ namespace Task72WinFormsApp
         bool activeGame = false;
 
         Random random = new Random();
-        List<MoveBall> moveBalls = new List<MoveBall>();
+        List<Ball> balls = new List<Ball>();
 
         public MainForm()
         {
@@ -25,7 +25,7 @@ namespace Task72WinFormsApp
             for (int i = 0; i < numberBalls; i++)
             {
                 var moveBall = new MoveBall(this);
-                moveBalls.Add(moveBall);
+                balls.Add(moveBall);
                 moveBall.Show();
             }
 
@@ -35,12 +35,12 @@ namespace Task72WinFormsApp
 
         private void MainForm_MouseClick(object sender, MouseEventArgs e)
         {
-            for (int i = 0; i < moveBalls.Count; i++)
+            for (int i = 0; i < balls.Count; i++)
             {
-                if (moveBalls[i].IsBallClick(e.X, e.Y) && moveBalls[i].IsCatchOnForm() && moveBalls[i].IsMoveable())
+                if (balls[i].IsBallClick(e.X, e.Y) && balls[i].IsCatchOnForm() && balls[i].IsMoveable())
                 {
-                    moveBalls[i].Stop();
-                    moveBalls[i].Recolor();
+                    balls[i].Stop();
+                    balls[i].Recolor();
                     counterCatchBalls++;
 
                     countBallsLabel.Text = counterCatchBalls.ToString();

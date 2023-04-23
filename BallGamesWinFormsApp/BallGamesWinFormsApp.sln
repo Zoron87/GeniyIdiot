@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task72WinFormsApp", "Task72
 		{82D5F564-2111-489D-A4F2-99BFE203F098} = {82D5F564-2111-489D-A4F2-99BFE203F098}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonWinFormsLibrary", "CommonWinFormsLibrary\CommonWinFormsLibrary.csproj", "{00C85F08-D259-45BD-8537-A0374538E47D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonWinFormsLibrary", "CommonWinFormsLibrary\CommonWinFormsLibrary.csproj", "{00C85F08-D259-45BD-8537-A0374538E47D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BillyardBallsWinFormsApp", "BillyardBallsWinFormsApp\BillyardBallsWinFormsApp.csproj", "{89D97339-1409-4736-B58A-2A3B9B9E910F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{00C85F08-D259-45BD-8537-A0374538E47D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00C85F08-D259-45BD-8537-A0374538E47D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00C85F08-D259-45BD-8537-A0374538E47D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89D97339-1409-4736-B58A-2A3B9B9E910F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89D97339-1409-4736-B58A-2A3B9B9E910F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89D97339-1409-4736-B58A-2A3B9B9E910F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89D97339-1409-4736-B58A-2A3B9B9E910F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

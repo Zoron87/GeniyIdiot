@@ -10,9 +10,9 @@ namespace CommonWinFormsLibrary
     {
         public RandomSizeAndPointBall(Form form) : base(form)
         {
-            x = random.Next(0, form.ClientSize.Width);
-            y = random.Next(0, form.ClientSize.Height);
-            size = random.Next(30, 100);
+            centerX = random.Next(LeftSide(), RightSide());
+            centerY = random.Next(TopSide(), DownSide());
+            radius = random.Next(10, 40);
 
             vx = random.Next(-10, 10);
             vy = random.Next(-10, 10);

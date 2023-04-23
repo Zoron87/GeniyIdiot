@@ -10,8 +10,8 @@ namespace CommonWinFormsLibrary
     {
         public PointBall(Form form, int x, int y) : base(form)
         {
-            this.x = x - 50;
-            this.y = y - 50;
+            this.centerX = x - 50;
+            this.centerY = y - 50;
         }
     }
 }

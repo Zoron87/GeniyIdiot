@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Timer = System.Windows.Forms.Timer;
 
 namespace CommonWinFormsLibrary
 {
     public class Ball
     {
         protected Random random = new Random();
+        Timer timer = new Timer();
 
         private Form form;
 
-        protected int x = 50;
-        protected int y = 50;
-        protected int size = 100;
+        protected int centerX = 10;
+        protected int centerY = 10;
+        protected int radius = 25;
 
         protected int vx = 1;
         protected int vy = 1;
@@ -22,6 +24,8 @@ namespace CommonWinFormsLibrary
         public Ball(Form form)
         {
             this.form = form;
+            timer.Start();
+            timer.Tick += Timer_Tick;
         }
 
         public void Move()
@@ -36,27 +40,48 @@ namespace CommonWinFormsLibrary
             Init(Brushes.Aqua);
         }
 
+        public bool IsMoveable()
+        {
+            return timer.Enabled;
+        }
+
         public bool IsBallClick(int x, int y)
         {
-            var centerX = this.x + size / 2;
-            var centerY = this.y + size / 2;
-            var radiusBall = size / 2;
-
-            var clickInBall = Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2) <= Math.Pow(radiusBall, 2);
+            var clickInBall = Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2) <= Math.Pow(radius, 2);
 
             return clickInBall;
         }
 
+        public int RightSide()
+        {
+            return form.ClientSize.Width - radius;
+        }
+
+        public int TopSide()
+        {
+            return radius;
+        }
+
+        public int DownSide()
+        {
+            return form.ClientSize.Height - radius;
+        }
+
+        public int LeftSide()
+        {
+            return radius;
+        }
+
         public bool IsCatchOnForm()
         {
-            return x <= form.ClientSize.Width - size && y <= form.ClientSize.Height - size && x >= 0 && y >= 0;
+            return centerX <= RightSide() && centerY <= DownSide() && centerX >= LeftSide() && centerY >= TopSide();
         }
 
         public void Init(Brush brush)
         {
             if (brush == null) brush = Brushes.Aqua;
             var graphics = form.CreateGraphics();
-            Rectangle rectangle = new Rectangle(x, y, size, size);
+            Rectangle rectangle = new Rectangle(centerX - radius, centerY - radius, 2 * radius, 2* radius);
             graphics.FillEllipse(brush, rectangle);
         }
 
@@ -65,15 +90,30 @@ namespace CommonWinFormsLibrary
             Init(Brushes.Gray);
         }
 
-        private void Go()
+        public void Start()
         {
-            x += vx;
-            y += vy;
+            timer.Start();
+        }
+
+        public void Stop()
+        {
+            timer.Stop();
+        }
+
+        protected virtual void Go()
+        {
+            centerX += vx;
+            centerY += vy;
         }
 
         private void Clear()
         {
-            Init(Brushes.White);
+            Init(new SolidBrush(form.BackColor));
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            Move();
         }
     }
 }
