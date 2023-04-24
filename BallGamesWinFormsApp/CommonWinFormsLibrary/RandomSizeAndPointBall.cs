@@ -12,7 +12,7 @@ namespace CommonWinFormsLibrary
         {
             centerX = random.Next(LeftSide(), RightSide());
             centerY = random.Next(TopSide(), DownSide());
-            radius = random.Next(10, 40);
+            radius = random.Next(20, 40);
 
             vx = random.Next(-10, 10);
             vy = random.Next(-10, 10);

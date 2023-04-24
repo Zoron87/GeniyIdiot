@@ -14,6 +14,5 @@ namespace CommonWinFormsLibrary
         {
             this.form = form;
         }
-       
     }
 }

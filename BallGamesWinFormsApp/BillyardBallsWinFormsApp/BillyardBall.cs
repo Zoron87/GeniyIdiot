@@ -9,39 +9,97 @@ namespace BillyardBallsWinFormsApp
 {
     public class BillyardBall : MoveBall
     {
+        public Brush brush;
         public event EventHandler<HitEventArgs> OnHited;
-        public BillyardBall(Form form) : base(form)
-        {
 
+    public BillyardBall(Form form) : base(form)
+        {
+            timer.Enabled = false;
+
+            radius = random.Next(10, 20);
+
+            vx = random.Next(-15, 15);
+            vy = random.Next(-15, 15);
         }
 
         protected override void Go()
         {
             base.Go();
 
-            if (centerX <= LeftSide())
+            if (brush == Brushes.Green)
             {
-                vx = -vx;
-                OnHited.Invoke(this, new HitEventArgs(Side.Left));
+                if (centerX <= LeftSide())
+                {
+                    vx = -vx;
+                    OnHited.Invoke(this, new HitEventArgs(Side.GreenLeft));
+                }
+
+                if (centerX >= RightSide())
+                {
+                    vx = -vx;
+                    OnHited.Invoke(this, new HitEventArgs(Side.GreenRight));
+                }
+
+                if (centerY <= TopSide())
+                {
+                    vy = -vy;
+                    OnHited.Invoke(this, new HitEventArgs(Side.GreenTop));
+                }
+
+                if (centerY >= DownSide())
+                {
+                    vy = -vy;
+                    OnHited.Invoke(this, new HitEventArgs(Side.GreenDown));
+                }
             }
 
-            if (centerX >= RightSide())
+            if (brush == Brushes.Blue)
             {
-                vx = -vx;
-                OnHited.Invoke(this, new HitEventArgs(Side.Right));
-            }
+                if (centerX <= LeftSide())
+                {
+                    vx = -vx;
+                    OnHited.Invoke(this, new HitEventArgs(Side.BlueLeft));
+                }
 
-            if (centerY <= TopSide())
-            {
-                vy = -vy;
-                OnHited.Invoke(this, new HitEventArgs(Side.Top));
-            }
+                if (centerX >= RightSide())
+                {
+                    vx = -vx;
+                    OnHited.Invoke(this, new HitEventArgs(Side.BlueRight));
+                }
 
-            if (centerY >= DownSide())
-            {
-                vy = -vy;
-                OnHited.Invoke(this, new HitEventArgs(Side.Down));
+                if (centerY <= TopSide())
+                {
+                    vy = -vy;
+                    OnHited.Invoke(this, new HitEventArgs(Side.BlueTop));
+                }
+
+                if (centerY >= DownSide())
+                {
+                    vy = -vy;
+                    OnHited.Invoke(this, new HitEventArgs(Side.BlueDown));
+                }
             }
+        }
+
+        public override void Show()
+        {
+            Init(brush);
+        }
+
+        public int CenterX()
+        {
+            return centerX;
+        }
+
+        public int CenterY()
+        {
+            return centerY;
+        }
+
+
+        protected virtual void Timer_Tick(object? sender, EventArgs e)
+        {
+            Move();
         }
     }
 }

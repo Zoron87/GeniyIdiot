@@ -10,9 +10,10 @@ namespace CommonWinFormsLibrary
     public class Ball
     {
         protected Random random = new Random();
-        Timer timer = new Timer();
+        protected Timer timer = new Timer();
 
         private Form form;
+        private Brush brush;
 
         protected int centerX = 10;
         protected int centerY = 10;
@@ -35,7 +36,7 @@ namespace CommonWinFormsLibrary
             Show();
         }
 
-        public void Show()
+        public virtual void Show()
         {
             Init(Brushes.Aqua);
         }
@@ -100,6 +101,22 @@ namespace CommonWinFormsLibrary
             timer.Stop();
         }
 
+        public void ChooseSide(string side)
+        {
+            switch (side)
+            {
+               case "Left":
+                    centerX = random.Next(LeftSide(), form.ClientSize.Width /2 - radius);
+                    brush = Brushes.Green;
+                    break;
+
+                case "Right":
+                    centerX = random.Next(form.ClientSize.Width / 2 + radius, RightSide());
+                    brush = Brushes.Blue;
+                    break;
+            }
+        }
+
         protected virtual void Go()
         {
             centerX += vx;
@@ -111,7 +128,7 @@ namespace CommonWinFormsLibrary
             Init(new SolidBrush(form.BackColor));
         }
 
-        private void Timer_Tick(object? sender, EventArgs e)
+        protected virtual void Timer_Tick(object? sender, EventArgs e)
         {
             Move();
         }
