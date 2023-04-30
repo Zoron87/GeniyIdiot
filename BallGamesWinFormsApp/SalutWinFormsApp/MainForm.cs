@@ -1,9 +1,11 @@
+using Timer = System.Windows.Forms.Timer;
+
 namespace SalutWinFormsApp
 {
     public partial class MainForm : Form
     {
         Random random = new Random();
-        SparkBall sparkBall;
+        SalutBall salutBall;
 
         public MainForm()
         {
@@ -12,12 +14,13 @@ namespace SalutWinFormsApp
 
         private void MainForm_MouseDown(object sender, MouseEventArgs e)
         {
-            var rndSparkBalls = random.Next(5, 10);
 
-            for (int i = 0; i < rndSparkBalls; i++)
+            var rndSalutBalls = random.Next(6, 10);
+
+            for (int i = 0; i < rndSalutBalls; i++)
             {
-                sparkBall = new SparkBall(this, e.X, e.Y);
-                sparkBall.Start();
+                salutBall = new SalutBall(this);
+                salutBall.Start();
             }
         }
     }

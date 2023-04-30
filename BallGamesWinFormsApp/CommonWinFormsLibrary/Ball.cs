@@ -29,7 +29,7 @@ namespace CommonWinFormsLibrary
             timer.Tick += Timer_Tick;
         }
 
-        public void Move()
+        public virtual void Move()
         {
             Clear();
             Go();
@@ -123,7 +123,7 @@ namespace CommonWinFormsLibrary
             centerY += vy;
         }
 
-        private void Clear()
+        public void Clear()
         {
             Init(new SolidBrush(form.BackColor));
         }

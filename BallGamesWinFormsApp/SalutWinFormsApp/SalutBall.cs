@@ -10,29 +10,43 @@ namespace SalutWinFormsApp
     public class SalutBall : MoveBall
     {
         static Random random = new Random();
-        float deltaLifeTime;
         Form form;
 
-        float lifeTime;
         public SalutBall(Form form) : base(form)
         {
             this.form = form;
-            centerY = form.ClientSize.Height;
-            centerX = random.Next(8, 10);
-            vy = -10;
-            lifeTime = random.Next(5, 6);
-            deltaLifeTime = (float)random.NextDouble();
+            var startFromDown = centerY = form.ClientSize.Height;
+
+            vy = -random.Next(5,15);
+            vx = 1;
+
+            radius = 18;
         }
 
-        protected override void Go()
+        public float GetCenterY()
         {
-            base.Go();
+            return centerY;
+        }
 
-            lifeTime -= deltaLifeTime;
+        public float GetCenterX()
+        {
+            return centerX;
+        }
 
-            if (lifeTime <= 0)
+        protected override void Timer_Tick(object? sender, EventArgs e)
+        {
+            base.Move();
+
+            var randomMaxHeight = random.Next((int)(form.ClientSize.Height * 0.1), (int)(form.ClientSize.Height * 0.3));
+
+            if (centerY <= randomMaxHeight)
             {
-                for (int i=0; i<5; i++)
+                Clear();
+                Stop();
+
+                var randomSparkBall = random.Next(20, 30);
+
+                for (int i = 0; i < randomSparkBall; i++)
                 {
                     var sparkBall = new SparkBall(form, this.centerX, this.centerY);
                 }

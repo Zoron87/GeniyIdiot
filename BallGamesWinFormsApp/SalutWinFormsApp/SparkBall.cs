@@ -10,20 +10,26 @@ namespace SalutWinFormsApp
     public class SparkBall : MoveBall
     {
         private float g = 0.2f;
+        public Brush brush;
 
         public SparkBall(Form form, float centerX, float centerY) : base(form)
         {
             this.centerX = centerX;
             this.centerY = centerY;
+            radius = random.Next(3,10);
+            brush = new SolidBrush(Color.FromArgb((byte)random.Next(1, 255), (byte)random.Next(1, 255), (byte)random.Next(1, 233)));
 
             vy = -Math.Abs(vy);
-            radius = 15;
         }
 
         protected override void Go()
         {
             base.Go();
             vy += g;
+        }
+        public override void Show()
+        {
+            Init(brush);
         }
     }
 }
