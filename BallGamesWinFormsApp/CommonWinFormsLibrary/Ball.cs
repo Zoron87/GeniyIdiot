@@ -15,12 +15,12 @@ namespace CommonWinFormsLibrary
         private Form form;
         private Brush brush;
 
-        protected int centerX = 10;
-        protected int centerY = 10;
+        protected float centerX = 10;
+        protected float centerY = 10;
         protected int radius = 25;
 
-        protected int vx = 1;
-        protected int vy = 1;
+        protected float vx = 1;
+        protected float vy = 1;
 
         public Ball(Form form)
         {
@@ -82,7 +82,7 @@ namespace CommonWinFormsLibrary
         {
             if (brush == null) brush = Brushes.Aqua;
             var graphics = form.CreateGraphics();
-            Rectangle rectangle = new Rectangle(centerX - radius, centerY - radius, 2 * radius, 2* radius);
+            var rectangle = new RectangleF(centerX - radius, centerY - radius, 2 * radius, 2* radius);
             graphics.FillEllipse(brush, rectangle);
         }
 

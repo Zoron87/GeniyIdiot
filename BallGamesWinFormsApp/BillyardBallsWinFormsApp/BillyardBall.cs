@@ -86,12 +86,12 @@ namespace BillyardBallsWinFormsApp
             Init(brush);
         }
 
-        public int CenterX()
+        public float CenterX()
         {
             return centerX;
         }
 
-        public int CenterY()
+        public float CenterY()
         {
             return centerY;
         }
