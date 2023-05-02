@@ -29,6 +29,22 @@ namespace CommonWinFormsLibrary
             timer.Tick += Timer_Tick;
         }
 
+
+        public float GetCenterY()
+        {
+            return centerY;
+        }
+
+        public float GetCenterX()
+        {
+            return centerX;
+        }
+
+        public float GetRadius()
+        {
+            return radius;
+        }
+
         public virtual void Move()
         {
             Clear();
@@ -46,9 +62,9 @@ namespace CommonWinFormsLibrary
             return timer.Enabled;
         }
 
-        public bool IsBallClick(int x, int y)
+        public bool IsBallClick(float x, float y)
         {
-            var clickInBall = Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2) <= Math.Pow(radius, 2);
+            var clickInBall = Math.Pow(x - centerX, 2) + Math.Pow(y - centerY, 2) <= Math.Pow(radius, 2)*1.1;
 
             return clickInBall;
         }

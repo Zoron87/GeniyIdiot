@@ -23,16 +23,6 @@ namespace SalutWinFormsApp
             radius = 18;
         }
 
-        public float GetCenterY()
-        {
-            return centerY;
-        }
-
-        public float GetCenterX()
-        {
-            return centerX;
-        }
-
         protected override void Timer_Tick(object? sender, EventArgs e)
         {
             base.Move();

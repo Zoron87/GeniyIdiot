@@ -1,11 +1,10 @@
-﻿using CommonWinFormsLibrary;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SalutWinFormsApp
+namespace CommonWinFormsLibrary
 {
     public class SparkBall : MoveBall
     {
@@ -16,7 +15,15 @@ namespace SalutWinFormsApp
         {
             this.centerX = centerX;
             this.centerY = centerY;
-            radius = random.Next(3,10);
+            radius = random.Next(3, 10);
+            brush = new SolidBrush(Color.FromArgb((byte)random.Next(1, 255), (byte)random.Next(1, 255), (byte)random.Next(1, 233)));
+
+            vy = -Math.Abs(vy);
+        }
+
+        public SparkBall(Form form) : base(form)
+        {
+            radius = random.Next(3, 10);
             brush = new SolidBrush(Color.FromArgb((byte)random.Next(1, 255), (byte)random.Next(1, 255), (byte)random.Next(1, 233)));
 
             vy = -Math.Abs(vy);
