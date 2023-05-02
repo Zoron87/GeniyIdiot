@@ -15,6 +15,7 @@ namespace FruitNinjaWinFormsApp
         private int y;
 
         bool mouseMove = false;
+        int counterSlowGame;
 
         public MainForm()
         {
@@ -23,17 +24,12 @@ namespace FruitNinjaWinFormsApp
 
         private void startGameButton_Click(object sender, EventArgs e)
         {
+            gameTimer.Start();
+
             if (activeGame)
                 Application.Restart();
 
-            var randomFruitNinjaBall = random.Next(10, 15);
-
-            for (int i=0; i< randomFruitNinjaBall; i++)
-            {
-                var fruitNinjaBall = new FruitNinjaBall(this);
-                fruitNinjaBalls.Add(fruitNinjaBall);
-                fruitNinjaBall.Start();
-            }
+            PushBalls(10, 15);
 
             activeGame = true;
             startGameButton.Text = "Перезапустить игру";
@@ -65,13 +61,6 @@ namespace FruitNinjaWinFormsApp
 
                 if (NumIntersections == 2)
                 {
-                    if (fruitNinjaBall.brush == Brushes.Black)
-                    {
-                        GameOver();
-                        MessageBox.Show("Вы разрезали бомбу!", "Game Over", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                        Application.Restart();
-                    }
-
                     var lineVector = pointStartLine.X - pointEndLine.X;
                     var findVectorIntersection = intersection1.X - intersection2.X;
 
@@ -97,6 +86,19 @@ namespace FruitNinjaWinFormsApp
                     if ((intersection1.X >= pointStartLine.X && intersection2.X <= pointEndLine.X)
                         || (intersection1.X <= pointStartLine.X && intersection2.X >= pointEndLine.X))
                     {
+                        if (fruitNinjaBall.brush == Brushes.Black)
+                        {
+                            GameOver();
+                            MessageBox.Show("Вы разрезали бомбу! Начать заново?", "Game Over", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                            Application.Restart();
+                        }
+
+                        if (fruitNinjaBall.brush == Brushes.Yellow)
+                        {
+                            modeGameLabel.Text = "SlowGame";
+                            SlowGame();
+                        }
+
                         fruitNinjaBall.Stop();
                         fruitNinjaBall.Clear();
                     }
@@ -147,9 +149,44 @@ namespace FruitNinjaWinFormsApp
             }
         }
 
+        private void gameTimer_Tick(object sender, EventArgs e)
+        {
+            counterSlowGame++;
+            PushBalls(2, 4);
+
+            if (counterSlowGame == 10)
+            {
+                modeGameLabel.Text = "NormalGame";
+                NormalGame();
+            }
+        }
+
+        public void PushBalls(int ballsFrom, int ballsTo)
+        {
+            var randomFruitNinjaBall = random.Next(ballsFrom, ballsTo);
+
+            for (int i = 0; i < randomFruitNinjaBall; i++)
+            {
+                var fruitNinjaBall = new FruitNinjaBall(this);
+                fruitNinjaBalls.Add(fruitNinjaBall);
+                fruitNinjaBall.Start();
+            }
+        }
+
+        public void SlowGame()
+        {
+            fruitNinjaBalls.ForEach(b =>b.SetSlowSpeed());
+        }
+
+        public void NormalGame()
+        {
+            fruitNinjaBalls.ForEach(b => b.SetDefaultSpeed());
+        }
+
         public void GameOver()
         {
             fruitNinjaBalls.ForEach(b => b.Stop());
+            gameTimer.Stop();   
         }
 
     }

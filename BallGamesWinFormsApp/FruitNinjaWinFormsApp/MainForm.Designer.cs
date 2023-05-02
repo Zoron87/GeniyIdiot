@@ -28,15 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.startGameButton = new System.Windows.Forms.Button();
             this.scoreLabel = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.gameTimer = new System.Windows.Forms.Timer(this.components);
+            this.modeGameLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // startGameButton
             // 
             this.startGameButton.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.startGameButton.Location = new System.Drawing.Point(860, 570);
+            this.startGameButton.Location = new System.Drawing.Point(861, 514);
             this.startGameButton.Name = "startGameButton";
             this.startGameButton.Size = new System.Drawing.Size(88, 61);
             this.startGameButton.TabIndex = 0;
@@ -48,7 +51,7 @@
             // 
             this.scoreLabel.AutoSize = true;
             this.scoreLabel.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.scoreLabel.Location = new System.Drawing.Point(860, 532);
+            this.scoreLabel.Location = new System.Drawing.Point(861, 476);
             this.scoreLabel.Name = "scoreLabel";
             this.scoreLabel.Size = new System.Drawing.Size(23, 25);
             this.scoreLabel.TabIndex = 14;
@@ -58,17 +61,32 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.label4.Location = new System.Drawing.Point(860, 499);
+            this.label4.Location = new System.Drawing.Point(861, 443);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(59, 25);
             this.label4.TabIndex = 15;
             this.label4.Text = "Счет:";
             // 
+            // gameTimer
+            // 
+            this.gameTimer.Interval = 1000;
+            this.gameTimer.Tick += new System.EventHandler(this.gameTimer_Tick);
+            // 
+            // modeGameLabel
+            // 
+            this.modeGameLabel.AutoSize = true;
+            this.modeGameLabel.Location = new System.Drawing.Point(861, 411);
+            this.modeGameLabel.Name = "modeGameLabel";
+            this.modeGameLabel.Size = new System.Drawing.Size(78, 15);
+            this.modeGameLabel.TabIndex = 16;
+            this.modeGameLabel.Text = "NormalGame";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(961, 643);
+            this.ClientSize = new System.Drawing.Size(961, 584);
+            this.Controls.Add(this.modeGameLabel);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.scoreLabel);
             this.Controls.Add(this.startGameButton);
@@ -86,5 +104,7 @@
         private Button startGameButton;
         private Label scoreLabel;
         private Label label4;
+        private System.Windows.Forms.Timer gameTimer;
+        private Label modeGameLabel;
     }
 }
