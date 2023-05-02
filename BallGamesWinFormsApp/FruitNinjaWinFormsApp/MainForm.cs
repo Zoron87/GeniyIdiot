@@ -65,6 +65,13 @@ namespace FruitNinjaWinFormsApp
 
                 if (NumIntersections == 2)
                 {
+                    if (fruitNinjaBall.brush == Brushes.Black)
+                    {
+                        GameOver();
+                        MessageBox.Show("Вы разрезали бомбу!", "Game Over", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                        Application.Restart();
+                    }
+
                     var lineVector = pointStartLine.X - pointEndLine.X;
                     var findVectorIntersection = intersection1.X - intersection2.X;
 
@@ -140,6 +147,10 @@ namespace FruitNinjaWinFormsApp
             }
         }
 
+        public void GameOver()
+        {
+            fruitNinjaBalls.ForEach(b => b.Stop());
+        }
 
     }
 }
