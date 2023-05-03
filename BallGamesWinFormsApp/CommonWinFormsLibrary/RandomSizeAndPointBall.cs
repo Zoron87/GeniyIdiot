@@ -15,7 +15,7 @@ namespace CommonWinFormsLibrary
             radius = random.Next(20, 40);
 
             vx = random.Next(-10, 10);
-            vy = random.Next(-10, 10);
+            vy = random.Next(-20, 20);
         }
     }
 }
