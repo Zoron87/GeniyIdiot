@@ -13,7 +13,7 @@ namespace CommonWinFormsLibrary
         protected Timer timer = new Timer();
 
         private Form form;
-        private Brush brush;
+        protected Brush brush;
 
         protected float centerX = 10;
         protected float centerY = 10;
