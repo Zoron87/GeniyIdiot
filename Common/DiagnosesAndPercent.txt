@@ -1,0 +1,1 @@
+﻿[{"UserDiagnose":"Кретин","PercentCorrectAnswers":10.0},{"UserDiagnose":"Идиот","PercentCorrectAnswers":20.0},{"UserDiagnose":"Дурак","PercentCorrectAnswers":40.0},{"UserDiagnose":"Нормальный","PercentCorrectAnswers":70.0},{"UserDiagnose":"Талант","PercentCorrectAnswers":85.0},{"UserDiagnose":"Гений","PercentCorrectAnswers":100.0}]
