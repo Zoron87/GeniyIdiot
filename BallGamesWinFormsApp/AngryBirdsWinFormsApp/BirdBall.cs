@@ -34,7 +34,7 @@ namespace AngryBirdsWinFormsApp
             this.centerX = radius;
             this.centerY = form.ClientSize.Height - radius;
 
-            Show();
+            Show(); 
             Stop();
         }
 
