@@ -28,44 +28,40 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.snakePictureBox = new System.Windows.Forms.PictureBox();
-            this.mainTimer = new System.Windows.Forms.Timer(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.snakePictureBox)).BeginInit();
-            this.SuspendLayout();
-            // 
-            // snakePictureBox
-            // 
-            this.snakePictureBox.Image = global::SnakeWinFormsApp.Properties.Resources.snake_small;
-            this.snakePictureBox.Location = new System.Drawing.Point(12, 12);
-            this.snakePictureBox.Margin = new System.Windows.Forms.Padding(0);
-            this.snakePictureBox.Name = "snakePictureBox";
-            this.snakePictureBox.Size = new System.Drawing.Size(35, 35);
-            this.snakePictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.snakePictureBox.TabIndex = 0;
-            this.snakePictureBox.TabStop = false;
+            components = new System.ComponentModel.Container();
+            mainTimer = new System.Windows.Forms.Timer(components);
+            scoreLabel = new Label();
+            SuspendLayout();
             // 
             // mainTimer
             // 
-            this.mainTimer.Tick += new System.EventHandler(this.mainTimer_Tick);
+            //mainTimer.Tick += mainTimer_Tick;
+            // 
+            // scoreLabel
+            // 
+            scoreLabel.AutoSize = true;
+            scoreLabel.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point);
+            scoreLabel.Location = new Point(627, 9);
+            scoreLabel.Name = "scoreLabel";
+            scoreLabel.Size = new Size(83, 25);
+            scoreLabel.TabIndex = 0;
+            scoreLabel.Text = "Score: 0";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(681, 644);
-            this.Controls.Add(this.snakePictureBox);
-            this.Name = "MainForm";
-            this.Text = "MainForm";
-            this.Paint += new System.Windows.Forms.PaintEventHandler(this.MainForm_Paint);
-            ((System.ComponentModel.ISupportInitialize)(this.snakePictureBox)).EndInit();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(717, 620);
+            Controls.Add(scoreLabel);
+            Name = "MainForm";
+            Text = "MainForm";
+            Paint += MainForm_Paint;
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
-
-        private PictureBox snakePictureBox;
         private System.Windows.Forms.Timer mainTimer;
+        private Label scoreLabel;
     }
 }
